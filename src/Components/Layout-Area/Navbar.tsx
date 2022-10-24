@@ -32,7 +32,7 @@ const MyNavbar = (props: MyNavbarProps) => {
       })
 
       return (
-            <Container className="mt-1">
+            <Container className="mt-2" >
 
                   {props.bodyWidth >= 768 &&
                         <Container>
@@ -86,18 +86,18 @@ const MyNavbar = (props: MyNavbarProps) => {
                   }
 
                   {props.bodyWidth < 768 &&
-                        <Container fluid>
-                              <Row className="mb-2">
+                        <Container fluid='xs'>
+                              <Row className="mb-2 me-auto p-4">
                                     <Col sm='2' xs='2' xxs='3'>
                                           <Row>
                                                 <Col sm='6' xs='6' xxs='6'>
                                                       <NavLink to={"/"}>
-                                                            <AiOutlineShoppingCart size='1.5rem' />
+                                                            <AiOutlineShoppingCart />
                                                       </NavLink>
                                                 </Col>
                                                 <Col sm='6' xs='6' xxs='6'>
                                                       <NavLink to={"/"}>
-                                                            <VscAccount size='1.5rem' />
+                                                            <VscAccount />
                                                       </NavLink>
                                                 </Col>
                                           </Row>
@@ -117,11 +117,11 @@ const MyNavbar = (props: MyNavbarProps) => {
                                           <Row>
                                                 <Col sm='6' xs='6' xxs='6'>
                                                       <NavLink to="/">
-                                                            <AiOutlineSearch size='1.5rem' />
+                                                            <AiOutlineSearch />
                                                       </NavLink>
                                                 </Col>
                                                 <Col sm='6' xs='6' xxs='6'>
-                                                      <FiMenu size='1.5rem' onClick={handleShow} />
+                                                      <FiMenu onClick={handleShow} />
                                                 </Col>
                                           </Row>
                                     </Col>
