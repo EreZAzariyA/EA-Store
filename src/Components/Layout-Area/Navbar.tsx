@@ -32,7 +32,7 @@ const MyNavbar = (props: MyNavbarProps) => {
       })
 
       return (
-            <Container className="navStyle mt-2 mb-2 p-3" >
+            <Container fluid className="MyNavbar">
 
                   {props.bodyWidth >= 768 &&
                         <Container>
@@ -86,7 +86,7 @@ const MyNavbar = (props: MyNavbarProps) => {
                   }
 
                   {props.bodyWidth < 768 &&
-                        <Container>
+                        <Container fluid className="miniNav">
                               <Row>
                                     <Col sm='2' xs='2' xxs='3'>
                                           <Row>

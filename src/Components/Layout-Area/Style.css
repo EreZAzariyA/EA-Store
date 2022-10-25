@@ -1,5 +1,16 @@
-.navStyle>*>*>*>*>* {
+.MyNavbar {
+      position: fixed;
+      background-color: white;
+      z-index: 3;
+}
+
+.miniNav>*>*>*>* {
       display: flex;
       flex-direction: row;
       justify-content: center;
+      padding: 15px;
+}
+
+.Layout .Main {
+      margin-top: 60px;
 }

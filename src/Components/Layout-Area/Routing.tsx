@@ -1,11 +1,16 @@
+import { Container, Row } from "react-bootstrap";
 import { Route, Routes } from "react-router-dom";
 import HomePage from "../Pages/Home-Page";
 
 const Routing = () => {
       return (
-            <Routes>
-                  <Route path="/" element={<HomePage />} />
-            </Routes>
+            <Container>
+                  <Row>
+                        <Routes>
+                              <Route path="/" element={<HomePage />} />
+                        </Routes>
+                  </Row>
+            </Container>
       )
 }
 

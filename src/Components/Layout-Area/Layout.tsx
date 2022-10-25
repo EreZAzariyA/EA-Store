@@ -1,10 +1,11 @@
 import { useState, useEffect, useMemo, useCallback } from "react";
-import { Container, Row } from "react-bootstrap"
+import { Col, Container, Row } from "react-bootstrap"
 import CategoryModel from "../../Models/Category-Model";
 import productsServices from "../../Services/Products-Services";
 import Footer from "./Footer";
 import MyNavbar from "./Navbar"
 import Routing from "./Routing";
+import "./Style.css";
 
 const Layout = () => {
       // Size
@@ -29,16 +30,16 @@ const Layout = () => {
       })
 
       return (
-            <Container fluid>
+            <Container fluid='true' className="Layout">
                   <Row>
                         <MyNavbar bodyWidth={size} categories={categories} />
                   </Row>
 
-                  <Row>
+                  <Row className="Main">
                         <Routing />
                   </Row>
 
-                  <Row style={{ marginTop: '30%' }}>
+                  <Row>
                         <Footer />
                   </Row>
 
