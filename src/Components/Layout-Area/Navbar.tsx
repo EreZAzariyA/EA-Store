@@ -9,7 +9,7 @@ import CategoryModel from "../../Models/Category-Model";
 import SubNavbar from "./Sub-Navbar";
 import SubCategoryModel from "../../Models/sub-category-model";
 import productsServices from "../../Services/Products-Services";
-
+import "./Style.css";
 
 interface MyNavbarProps {
       bodyWidth: number;
@@ -32,7 +32,7 @@ const MyNavbar = (props: MyNavbarProps) => {
       })
 
       return (
-            <Container className="mt-2" >
+            <Container className="navStyle mt-2 mb-2 p-3" >
 
                   {props.bodyWidth >= 768 &&
                         <Container>
@@ -86,18 +86,18 @@ const MyNavbar = (props: MyNavbarProps) => {
                   }
 
                   {props.bodyWidth < 768 &&
-                        <Container fluid='xs'>
-                              <Row className="mb-2 me-auto p-4">
+                        <Container>
+                              <Row>
                                     <Col sm='2' xs='2' xxs='3'>
                                           <Row>
                                                 <Col sm='6' xs='6' xxs='6'>
                                                       <NavLink to={"/"}>
-                                                            <AiOutlineShoppingCart />
+                                                            <AiOutlineShoppingCart size='1.8rem' />
                                                       </NavLink>
                                                 </Col>
                                                 <Col sm='6' xs='6' xxs='6'>
                                                       <NavLink to={"/"}>
-                                                            <VscAccount />
+                                                            <VscAccount size='1.8rem' />
                                                       </NavLink>
                                                 </Col>
                                           </Row>
@@ -117,11 +117,13 @@ const MyNavbar = (props: MyNavbarProps) => {
                                           <Row>
                                                 <Col sm='6' xs='6' xxs='6'>
                                                       <NavLink to="/">
-                                                            <AiOutlineSearch />
+                                                            <AiOutlineSearch size='1.8rem' />
                                                       </NavLink>
                                                 </Col>
                                                 <Col sm='6' xs='6' xxs='6'>
-                                                      <FiMenu onClick={handleShow} />
+                                                      <NavLink to=''>
+                                                            <FiMenu onClick={handleShow} size='1.8rem' />
+                                                      </NavLink>
                                                 </Col>
                                           </Row>
                                     </Col>
