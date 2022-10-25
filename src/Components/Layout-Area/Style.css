@@ -1,5 +1,6 @@
 .MyNavbar {
       position: fixed;
+      width: 100%;
       background-color: white;
       z-index: 3;
 }
@@ -10,6 +11,7 @@
       justify-content: center;
       padding: 15px;
 }
+
 
 .Layout .Main {
       margin-top: 60px;

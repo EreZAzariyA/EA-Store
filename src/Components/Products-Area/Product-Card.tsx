@@ -42,7 +42,7 @@ const ProductCard = (props: ProductCardProps) => {
 
                   {size < 768 &&
 
-                        <Card as={Col} xs='8' sm='5' className="d-inline-block m-2">
+                        <Card style={{ width: '15rem' }} className="d-inline-block mt-2">
                               <Container fluid>
                                     <Card.Img src={props.product.productImage} height='250' className="mt-2" />
 

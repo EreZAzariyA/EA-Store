@@ -22,14 +22,12 @@ const HomePage = () => {
       return (
             <Container>
                   <Row>
-                        <Image src={photo} alt="" style={{ height: '35%', width: '100%' }} />
+                        <Image src={photo} alt="" style={{ height: '35%', width: 'auto' }} />
                   </Row>
 
-                  <Container>
-                        {products?.map(product =>
-                              <ProductCard key={product.productId} product={product} />
-                        )}
-                  </Container>
+                  {products?.map(product =>
+                        <ProductCard key={product.productId} product={product} />
+                  )}
             </Container>
       )
 }
