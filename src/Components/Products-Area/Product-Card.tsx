@@ -11,10 +11,7 @@ interface ProductCardProps {
 }
 
 const ProductCard = (props: ProductCardProps) => {
-
       const [size, setSize] = useState(0);
-
-
       useMemo(() => {
             const size = document.body.offsetWidth
             document.body.onresize = () => {
@@ -45,12 +42,7 @@ const ProductCard = (props: ProductCardProps) => {
 
                   {size < 768 &&
 
-                        <Card className="mt-3 m-1 d-inline-block" as={Col} xxs='12' sm='5'>
-                              <Card.Header className="text-muted text-decoration-underline">
-                                    {getSubCategoryById(props.product.subCategoryId)}
-
-                              </Card.Header>
-
+                        <Card as={Col} xs='8' sm='5' className="d-inline-block m-2">
                               <Container fluid>
                                     <Card.Img src={props.product.productImage} height='250' className="mt-2" />
 
@@ -62,19 +54,24 @@ const ProductCard = (props: ProductCardProps) => {
                                                 </Card.Title>
 
 
-                                                <Row className="mt-3">
-                                                      <Col xxs='8'>
-                                                            <Card.Subtitle className="text-muted">
+                                                <Row className="m-auto">
+                                                      <Col xxs='12'>
+                                                            <h5 className="text-muted">
                                                                   {getCategoryById(props.product.categoryId)}
-                                                            </Card.Subtitle>
+                                                            </h5>
                                                       </Col>
 
-                                                      <Col xxs='4'>
+                                                      <Col xxs='12'>
+                                                            <Card.Subtitle className="text-muted">
+                                                                  {getSubCategoryById(props.product.subCategoryId)}
+                                                            </Card.Subtitle >
+                                                      </Col>
+
+                                                      <Col>
                                                             <h6>
                                                                   {numberWithCommas(props.product.productPrice) + '$'}
                                                             </h6>
                                                       </Col>
-
                                                 </Row>
 
 
