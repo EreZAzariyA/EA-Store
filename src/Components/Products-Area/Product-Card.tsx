@@ -42,57 +42,56 @@ const ProductCard = (props: ProductCardProps) => {
 
                   {size < 768 &&
 
-                        <Card style={{ width: '15rem' }} className="d-inline-block mt-2">
-                              <Container fluid>
-                                    <Card.Img src={props.product.productImage} height='250' className="mt-2" />
+                        <Card style={{ width: '12rem' }} className="d-inline-block m-auto mt-2">
 
+                              <Card.Img variant="top" src={props.product.productImage} />
+                              <Card.Body>
+
+                                    {/* <Card.Title>
+                                          {props.product.productName}
+                                    </Card.Title> */}
+                                    <Card.Title style={{ overflow: "hidden", height: "50px" }}>
+                                          {props.product.productName}
+                                    </Card.Title>
+
+                                    <Container className="m-auto text-muted">
+
+                                          <Row>
+                                                <Card.Subtitle>
+                                                      {getCategoryById(props.product.categoryId)}
+                                                </Card.Subtitle>
+                                          </Row>
+                                          <Row>
+                                                <p>
+                                                      {getSubCategoryById(props.product.subCategoryId)}
+                                                </p >
+
+                                          </Row>
+                                    </Container>
                                     <Row>
-                                          <Card.Body>
-
-                                                <Card.Title style={{ overflow: "hidden", height: "25px" }}>
-                                                      {props.product.productName}
-                                                </Card.Title>
-
-
-                                                <Row className="m-auto">
-                                                      <Col xxs='12'>
-                                                            <h5 className="text-muted">
-                                                                  {getCategoryById(props.product.categoryId)}
-                                                            </h5>
-                                                      </Col>
-
-                                                      <Col xxs='12'>
-                                                            <Card.Subtitle className="text-muted">
-                                                                  {getSubCategoryById(props.product.subCategoryId)}
-                                                            </Card.Subtitle >
-                                                      </Col>
-
-                                                      <Col>
-                                                            <h6>
-                                                                  {numberWithCommas(props.product.productPrice) + '$'}
-                                                            </h6>
-                                                      </Col>
-                                                </Row>
-
-
-                                          </Card.Body>
-
+                                          <h6>
+                                                {numberWithCommas(props.product.productPrice) + '$'}
+                                          </h6>
                                     </Row>
 
 
-                                    {/* <p style={{ width: 'auto', overflow: "hidden", height: "50px" }}>{props.product.productName}</p> */}
-                              </Container>
+                              </Card.Body>
                               <Card.Footer>
+
                                     <Button>
                                           Add to cart
                                           <BsCartPlus className="m-1" />
                                     </Button>
 
-                                    {/* <Button variant="success">
+                              </Card.Footer>
+
+
+
+
+                              {/* <Button variant="success">
                                           In-Cart
                                           <BsCartCheck className="m-1" />
                                     </Button> */}
-                              </Card.Footer>
 
                         </Card>
 

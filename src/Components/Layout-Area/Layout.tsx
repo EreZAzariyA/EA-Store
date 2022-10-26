@@ -30,12 +30,13 @@ const Layout = () => {
       })
 
       return (
-            <Container className="Layout">
+            <Container fluid>
+
                   <Row>
                         <MyNavbar bodyWidth={size} categories={categories} />
                   </Row>
 
-                  <Row className="Main">
+                  <Row>
                         <Routing />
                   </Row>
 

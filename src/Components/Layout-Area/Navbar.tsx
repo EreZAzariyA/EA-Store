@@ -32,11 +32,11 @@ const MyNavbar = (props: MyNavbarProps) => {
       })
 
       return (
-            <Container className="MyNavbar">
+            <Container className="mt-2">
 
                   {props.bodyWidth >= 768 &&
                         <Container>
-                              <Row className="mb-2">
+                              <Row>
                                     <Col md='3' lg='2' xxl='2'>
                                           <InputGroup size="sm">
                                                 <Button variant="secondary">
@@ -59,6 +59,7 @@ const MyNavbar = (props: MyNavbarProps) => {
 
                                     <Col md='3' lg='2' xxl='2'>
                                           <Row>
+                                                {/* Empty col */}
                                                 <Col md='6' xl='6' xxl='6'></Col>
 
                                                 <Col md='6' xl='6' xxl='6'>
@@ -86,17 +87,17 @@ const MyNavbar = (props: MyNavbarProps) => {
                   }
 
                   {props.bodyWidth < 768 &&
-                        <Container className="miniNav">
+                        <Container fluid className="miniNav mb-2 p-3">
                               <Row>
                                     <Col sm='2' xs='2' xxs='3'>
                                           <Row>
                                                 <Col sm='6' xs='6' xxs='6'>
-                                                      <NavLink to={"/"}>
+                                                      <NavLink to={"/your-cart"}>
                                                             <AiOutlineShoppingCart size='1.8rem' />
                                                       </NavLink>
                                                 </Col>
                                                 <Col sm='6' xs='6' xxs='6'>
-                                                      <NavLink to={"/"}>
+                                                      <NavLink to={"/your-profile"}>
                                                             <VscAccount size='1.8rem' />
                                                       </NavLink>
                                                 </Col>
@@ -116,7 +117,7 @@ const MyNavbar = (props: MyNavbarProps) => {
                                     <Col sm='2' xs='2' xxs='3'>
                                           <Row>
                                                 <Col sm='6' xs='6' xxs='6'>
-                                                      <NavLink to="/">
+                                                      <NavLink to="/search">
                                                             <AiOutlineSearch size='1.8rem' />
                                                       </NavLink>
                                                 </Col>
@@ -135,7 +136,7 @@ const MyNavbar = (props: MyNavbarProps) => {
                   <Offcanvas show={show} onHide={handleClose} placement='end' style={{ width: '20rem' }} className="d-md-none">
                         <SideNav categories={props.categories} />
                   </Offcanvas>
-            </Container >
+            </ Container>
       )
 }
 

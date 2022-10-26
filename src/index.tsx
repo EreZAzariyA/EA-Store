@@ -15,10 +15,9 @@ root.render(
   <React.StrictMode>
     <BrowserRouter>
       <ThemeProvider
-        breakpoints={['xxxl', 'xxl', 'xl', 'lg', 'md', 'sm', 'xs', 'xxs']}
+        breakpoints={[ 'xxl', 'xl', 'lg', 'md', 'sm', 'xs', 'xxs']}
         minBreakpoint="xxs"
       >
-
         <Layout />
       </ThemeProvider>
     </BrowserRouter>

@@ -1,4 +1,4 @@
-import { Container, DropdownButton, Nav, Navbar, Offcanvas } from "react-bootstrap";
+import { Button, Col, Container, DropdownButton, Nav, Navbar, NavLink, Offcanvas, Row } from "react-bootstrap";
 import CategoryModel from "../../Models/Category-Model";
 import { useCallback, useEffect, useState } from "react"
 import SubCategoryModel from "../../Models/sub-category-model";
@@ -25,30 +25,34 @@ const SideNav = (props: SideNavProps) => {
             const subCategory = subCategories?.filter(subCategory => subCategory.categoryId === categoryId);
             return (
                   subCategory?.map(subC =>
+
                         <Nav.Link key={subC.subCategoryId}>{subC.subCategory}</Nav.Link>
                   )
             );
       }
 
       return (
-            <Container>
+            <Container fluid='true' style={{ overflow: 'auto' }}>
                   <Offcanvas.Header closeButton>
-                        <Offcanvas.Title>Offcanvas</Offcanvas.Title>
+                        <Offcanvas.Title>Categories</Offcanvas.Title>
                   </Offcanvas.Header>
+
                   <Offcanvas.Body>
                         <Nav className="flex-column">
                               {props.categories?.map(category =>
-                                    <Navbar expand='xxs' key={category.categoryId} className="justify-content-center">
-                                          <Navbar.Toggle value={category.categoryId}>
-                                                {category.category} <IoMdArrowDropdown />
+                                    <Navbar expand='xs' key={category.categoryId} className="justify-content-around">
+
+                                          <Navbar.Toggle value={category.categoryId} style={{ borderRadius: '0' }}>
+                                                {category.category}
+                                                <IoMdArrowDropdown />
                                           </Navbar.Toggle>
 
-                                          <Navbar.Collapse key={category.category}>
-                                                <Nav key={category.category}>
-                                                      <Nav.Item key={category.categoryId}>
+
+                                          <Navbar.Collapse>
+                                                <Nav>
+                                                      <Nav.Item>
                                                             {getSubCategoriesByCategoryId(category.categoryId)}
                                                       </Nav.Item>
-
                                                 </Nav>
                                           </Navbar.Collapse>
                                     </Navbar>
