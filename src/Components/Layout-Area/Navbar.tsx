@@ -32,7 +32,7 @@ const MyNavbar = (props: MyNavbarProps) => {
       })
 
       return (
-            <Container className="mt-2">
+            <Container className="mt-2 p-0">
 
                   {props.bodyWidth >= 768 &&
                         <Container>
@@ -65,16 +65,17 @@ const MyNavbar = (props: MyNavbarProps) => {
                                                 <Col md='6' xl='6' xxl='6'>
                                                       <Row>
                                                             <Col sm='6' xs='6' xxs='6'>
-                                                                  <NavLink to={"/"}>
+                                                                  <NavLink to={"/your-cart"}>
                                                                         <AiOutlineShoppingCart size='1.5rem' />
                                                                   </NavLink>
                                                             </Col>
                                                             <Col sm='6' xs='6' xxs='6'>
-                                                                  <NavLink to={"/"}>
+                                                                  <NavLink to={"/your-profile"}>
                                                                         <VscAccount size='1.5rem' />
                                                                   </NavLink>
                                                             </Col>
                                                       </Row>
+
                                                 </Col>
                                           </Row>
                                     </Col>
@@ -87,7 +88,7 @@ const MyNavbar = (props: MyNavbarProps) => {
                   }
 
                   {props.bodyWidth < 768 &&
-                        <Container fluid className="miniNav mb-2 p-3">
+                        <Container fluid className="miniNav p-3">
                               <Row>
                                     <Col sm='2' xs='2' xxs='3'>
                                           <Row>
