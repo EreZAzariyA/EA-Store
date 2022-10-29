@@ -5,6 +5,8 @@ import { ShoppingCartModel } from "../../Models/shopping-cart-model";
 import UserModel from "../../Models/user-model"
 import { authStore, shoppingCartStore } from "../../Redux/Store";
 import shoppingCartServices from "../../Services/ShoppingCartServices";
+import ProductCard from "../Products-Area/Product-Card";
+import SideNavItem from "../Products-Area/SideNavItem";
 
 export const CartPage = () => {
 
@@ -50,7 +52,7 @@ export const CartPage = () => {
             <Container>
                   Cart-Page
                   {itemsInCart?.map(i =>
-                        <li key={i.productId}>{i.productId}</li>
+                        <SideNavItem item={i} key={i.productId} />
                   )}
             </Container>
       )

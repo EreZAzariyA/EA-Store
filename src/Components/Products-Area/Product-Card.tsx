@@ -1,16 +1,23 @@
-import { useState, useMemo } from "react";
-import { Button, Card, Carousel, Col, Container, Image, Row } from "react-bootstrap"
+import { useState, useMemo, useCallback, useEffect } from "react";
+import { Button, Card, Carousel, Col, Container, Image, Modal, Row } from "react-bootstrap"
 import { numberWithCommas } from "../..";
 import ProductModel from "../../Models/Product-Model"
-import { productsStore } from "../../Redux/Store";
-import { BsCartPlus } from "react-icons/bs";
+import { authStore, productsStore } from "../../Redux/Store";
+import { BsCartCheck, BsCartPlus } from "react-icons/bs";
 import { NavLink } from "react-router-dom";
+import { ItemInCartModel } from "../../Models/item-in-cart-model";
+import shoppingCartServices from "../../Services/ShoppingCartServices";
+import MyModal from "./Modal";
 
 interface ProductCardProps {
       product: ProductModel;
 }
 
 const ProductCard = (props: ProductCardProps) => {
+      const [show, setShow] = useState(false);
+      const handleShow = () => setShow(true);
+      const handleClose = () => setShow(false);
+
       const [size, setSize] = useState(0);
       useMemo(() => {
             const size = document.body.offsetWidth
@@ -20,19 +27,41 @@ const ProductCard = (props: ProductCardProps) => {
             }
             setSize(size);
 
-      }, [size]);
+      }, []);
+
+      const [itemsInCart, setItemsInCart] = useState<ItemInCartModel[]>();
+      const getItemsFromUserCartByUserId = useCallback(async () => {
+            const user = authStore.getState().user;
+            const itemsInCart = await shoppingCartServices.getAllItemsFromUserCartByUserId(user?.userId);
+            setItemsInCart(itemsInCart);
+      }, []);
+
+      const [inCart, setInCart] = useState<boolean>(false);
+      const checkItems = useCallback(async (items: ItemInCartModel[]) => {
+            if (items?.find(item => item.productId === props.product.productId)) {
+                  setInCart(true);
+            } else {
+                  setInCart(false);
+            }
+      }, [props.product.productId]);
+
+      useEffect(() => {
+            getItemsFromUserCartByUserId();
+            checkItems(itemsInCart);
+      });
 
       const getCategoryById = (categoryId: string) => {
             const category = productsStore.getState().categories?.find(c => c?.categoryId === categoryId);
             return category?.category;
-      }
+      };
       const getSubCategoryById = (subCategoryId: string) => {
             const subCategory = productsStore.getState().subCategories?.find(subC => subC?.subCategoryId === subCategoryId);
             return subCategory?.subCategory;
-      }
+      };
 
       return (
             <>
+                  {/* For Desktop */}
                   {size >= 768 &&
                         <Col md='4' lg='3' xxl='2'>
                               <Card className="d-inline-block m-1">
@@ -86,10 +115,19 @@ const ProductCard = (props: ProductCardProps) => {
 
                                     <Card.Footer>
 
-                                          <Button>
-                                                Add to cart
-                                                <BsCartPlus className="m-1" />
-                                          </Button>
+                                          {!inCart &&
+                                                <Button onClick={handleShow}>
+                                                      Add To Cart
+                                                      <BsCartPlus className="m-1" />
+                                                </Button>
+                                          }
+                                          {inCart &&
+                                                <Button variant="success">
+                                                      In Cart
+                                                      <BsCartCheck className="m-1" />
+                                                </Button>
+                                          }
+
 
                                     </Card.Footer>
 
@@ -105,24 +143,24 @@ const ProductCard = (props: ProductCardProps) => {
 
                         </Col>
                   }
-
+                  {/* For Mobile */}
                   {size < 768 &&
-                        <Col xxs='6' sm='4'>
-                              <Card className="d-inline-block m-auto mt-2" >
+                        <Col xxs='12' sm='4'>
+                              <Card className="d-inline-block m-auto mt-2 w-75">
 
                                     {/* Product card images */}
                                     <Carousel variant="dark">
-                                          <Carousel.Item style={{ height: '200px' }}>
+                                          <Carousel.Item>
                                                 <NavLink to={`/product/${props.product.productId}`}>
                                                       <Image src={props.product.productImage} alt="" className="w-100 h-100" />
                                                 </NavLink>
                                           </Carousel.Item>
-                                          <Carousel.Item style={{ height: '200px' }}>
+                                          <Carousel.Item>
                                                 <NavLink to={`/product/${props.product.productId}`}>
                                                       <Image src={props.product.productImage} alt="" className="w-100 h-100" />
                                                 </NavLink>
                                           </Carousel.Item>
-                                          <Carousel.Item style={{ height: '200px' }}>
+                                          <Carousel.Item>
                                                 <NavLink to={`/product/${props.product.productId}`}>
                                                       <Image src={props.product.productImage} alt="" className="w-100 h-100" />
                                                 </NavLink>
@@ -158,12 +196,18 @@ const ProductCard = (props: ProductCardProps) => {
                                     </Card.Body>
 
                                     <Card.Footer>
-
-                                          <Button>
-                                                Add to cart
-                                                <BsCartPlus className="m-1" />
-                                          </Button>
-
+                                          {!inCart &&
+                                                <Button onClick={handleShow}>
+                                                      Add To Cart
+                                                      <BsCartPlus className="m-1" />
+                                                </Button>
+                                          }
+                                          {inCart &&
+                                                <Button variant="success">
+                                                      In Cart
+                                                      <BsCartCheck className="m-1" />
+                                                </Button>
+                                          }
                                     </Card.Footer>
 
 
@@ -178,6 +222,10 @@ const ProductCard = (props: ProductCardProps) => {
                         </Col>
                   }
 
+
+                  <Modal show={show} size='sm'>
+                        <MyModal product={props.product} close={handleClose} />
+                  </Modal>
             </>
       )
 }

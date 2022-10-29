@@ -103,7 +103,6 @@ const MyNavbar = (props: MyNavbarProps) => {
                                                 </Col>
                                                 <Col sm='6' xs='6' xxs='6'>
                                                       <Dropdown>
-
                                                             <DropdownToggle as={NavLink} to={null}>
                                                                   <VscAccount size='1.8rem' />
                                                             </DropdownToggle>

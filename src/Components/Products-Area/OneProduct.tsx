@@ -1,93 +1,98 @@
 import { useCallback, useState, useEffect } from "react";
-import { Breadcrumb, Button, ButtonGroup, Card, Col, Container, Form, Image, NavLink, Row } from "react-bootstrap"
-import { Link, useParams } from "react-router-dom";
+import { Button, ButtonGroup, Card, Col, Container, Image, Row } from "react-bootstrap"
+import { useParams } from "react-router-dom";
 import ProductModel from "../../Models/Product-Model";
-import { productsStore } from "../../Redux/Store";
+import { authStore, shoppingCartStore } from "../../Redux/Store";
 import productsServices from "../../Services/Products-Services";
 
 const OneProduct = () => {
       const params = useParams();
       const [product, setProduct] = useState<ProductModel>();
+      const [stock, setStock] = useState(0);
 
-      const getProductById = useCallback(async () => {
+      const getProductByParams = useCallback(async () => {
             const productId = params.productId;
             const product = await productsServices.getOneProduct(productId);
             setProduct(product);
       }, [params.productId]);
 
-      const getCategoryNameById = (categoryId: string) => {
-            const category = productsStore.getState().categories?.find(c => c.categoryId === categoryId);
-            return category?.category
-      };
+      // const getCategoryNameById = (categoryId: string) => {
+      //       const category = productsStore.getState().categories?.find(c => c.categoryId === categoryId);
+      //       return category?.category
+      // };
 
+      // const getSubCategoryNameById = (subCategoryId: string) => {
+      //       const subCategory = productsStore.getState().subCategories?.find(c => c.subCategoryId === subCategoryId);
+      //       return subCategory?.subCategory;
+      // };
 
-      const getSubCategoryNameById = ((subCategoryId: string) => {
-            const subCategory = productsStore.getState().subCategories?.find(c => c.subCategoryId === subCategoryId);
-            return subCategory?.subCategory;
-      })
-
+      const getProductFromCart = useCallback(async () => {
+            const productId = params.productId;
+            if (authStore.getState().user) {
+                  const product = shoppingCartStore.getState().itemsInCart.find(p => p.productId === productId);
+                  if (product) {
+                        setStock(product.stock);
+                  }
+            }
+      }, [params.productId]);
+      
       useEffect(() => {
-            getProductById();
-      }, [])
+            getProductByParams();
+            // If there is a user:
+            getProductFromCart();
+      },[]);
 
+      const plus = () => {
+            setStock(stock + 1);
+      }
+      const minus = () => {
+            if (stock === 0) {
+                  return;
+            } else {
+                  setStock(stock - 1);
+            }
+      }
 
       return (
             <Container fluid>
-                  {/* <Row>
-                        <Breadcrumb>
-                              <NavLink as={Link} to="/" className="breadcrumb-item">
-                                    Home
-                              </NavLink>
+                  <Row>
+                        <Col md='6' sm='12' xs='12' xxs='12'>
+                              <Image src={product?.productImage} alt='' width='100%' height='100%' />
+                        </Col>
 
-                              <NavLink as={Link} to={"/category/" + product?.categoryId} className="breadcrumb-item">
-                                    {getCategoryNameById(product?.categoryId)}
-                              </NavLink>
+                        <Col md='6' sm='12' xs='12' xxs='12' >
+                              <Card className="text-center m-auto">
+                                    <Card.Header>
+                                          <Card.Title>
+                                                {product?.productName}
+                                          </Card.Title>
+                                    </Card.Header>
+                                    <Card.Body>
+                                          <Card.Text>
+                                                {product?.productDescription}
+                                          </Card.Text>
 
-                              <NavLink as={Link} to={"/category/" + product?.categoryId + "/sub-category/" + product?.subCategoryId} className="breadcrumb-item">
-                                    {product?.categoryId}
-                              </NavLink>
-                        </Breadcrumb>
-                  </Row> */}
+                                          <Row >
+                                                <ButtonGroup className="w-50 m-auto">
 
-                  <Container fluid >
-                        <Row>
-                              <Col md='6' sm='12' xs='12' xxs='12'>
-                                    <Image src={product?.productImage} alt='' width='auto' height='400px' />
-                              </Col>
-                              <Col md='6' sm='12' xs='12' xxs='12' style={{ marginTop: '5px' }}>
-                                    <Card border="light" className="text-center">
-                                          <Card.Header>
-                                                <Card.Title>
-                                                      {product?.productName}
-                                                </Card.Title>
-                                          </Card.Header>
-                                          <Card.Body>
-                                                <Card.Text>
-                                                      {product?.productDescription}
-                                                </Card.Text>
+                                                      <Button onClick={plus}>
+                                                            +
+                                                      </Button>
 
-                                                <Row >
-                                                      <ButtonGroup className="w-50 m-auto">
+                                                      <Button as="div" variant="light" disabled>
+                                                            {stock}
+                                                      </Button>
 
-                                                            <Button>
-                                                                  +
-                                                            </Button>
-
-                                                            <Button as="div" variant="light">
-                                                                  stock
-                                                            </Button>
-
-                                                            <Button>
-                                                                  -
-                                                            </Button>
-                                                      </ButtonGroup>
-                                                </Row>
-                                          </Card.Body>
-                                    </Card>
-                              </Col>
-                        </Row>
-                  </Container>
-            </Container >
+                                                      <Button onClick={minus}>
+                                                            -
+                                                      </Button>
+                                                </ButtonGroup>
+                                          </Row>
+                                    </Card.Body>
+                              </Card>
+                        </Col>
+                  </Row>
+            </Container>
       )
 }
 

@@ -8,6 +8,7 @@ import { CartPage } from "../Pages/Cart-Page";
 import HomePage from "../Pages/Home-Page";
 import { SearchPage } from "../Pages/Search-Page";
 import { UserProfile } from "../Pages/User-Profile";
+import OneProduct from "../Products-Area/OneProduct";
 
 const Routing = () => {
       const [user, setUser] = useState<UserModel>();
@@ -20,17 +21,22 @@ const Routing = () => {
             });
 
             return () => unsubscribe();
-      })
+      }, []);
 
       return (
             <Routes>
                   <Route path="/" element={<HomePage />} />
+                  <Route path="/product/:productId" element={<OneProduct />} />
                   <Route path="/your-cart" element={<CartPage />} />
                   <Route path="/your-profile" element={<UserProfile />} />
                   <Route path="/search" element={<SearchPage />} />
 
-                  <Route path="/auth/login" element={<Login />} />
-                  <Route path="/auth/register" element={<Register />} />
+                  {!user &&
+                        <>
+                              <Route path="/auth/login" element={<Login />} />
+                              <Route path="/auth/register" element={<Register />} />
+                        </>
+                  }
             </Routes>
       )
 }
