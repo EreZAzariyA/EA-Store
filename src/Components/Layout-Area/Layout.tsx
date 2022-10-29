@@ -1,10 +1,11 @@
 import { useState, useEffect, useMemo, useCallback } from "react";
-import { Col, Container, Row } from "react-bootstrap"
+import { Col, Container, Offcanvas, Row } from "react-bootstrap"
 import CategoryModel from "../../Models/Category-Model";
 import productsServices from "../../Services/Products-Services";
 import Footer from "./Footer";
 import MyNavbar from "./Navbar"
 import Routing from "./Routing";
+import SideNav from "./Side-Nav";
 import "./Style.css";
 
 const Layout = () => {
@@ -23,17 +24,18 @@ const Layout = () => {
       const getAllCategories = useCallback(async () => {
             const categories = await productsServices.getAllCategories();
             setCategories(categories);
-      }, [])
+      }, []);
 
       useEffect(() => {
             getAllCategories();
-      })
+      });
 
+      
       return (
-            <Container fluid>
+            <Container fluid className="Layout">
 
                   <Row>
-                        <MyNavbar bodyWidth={size} categories={categories} />
+                        <MyNavbar bodyWidth={size} categories={categories}/>
                   </Row>
 
                   <Row>

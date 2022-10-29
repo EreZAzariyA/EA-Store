@@ -1,5 +1,5 @@
 import { useCallback, useState, useEffect } from "react";
-import { Navbar, Container, Row, Col, Button, Offcanvas, Form, InputGroup } from "react-bootstrap"
+import { Navbar, Container, Row, Col, Button, Offcanvas, Form, InputGroup, Dropdown } from "react-bootstrap"
 import { NavLink } from "react-router-dom";
 import { AiOutlineSearch, AiOutlineShoppingCart } from "react-icons/ai";
 import { VscAccount } from "react-icons/vsc";
@@ -10,6 +10,10 @@ import SubNavbar from "./Sub-Navbar";
 import SubCategoryModel from "../../Models/sub-category-model";
 import productsServices from "../../Services/Products-Services";
 import "./Style.css";
+import DropdownToggle from "react-bootstrap/esm/DropdownToggle";
+import DropdownMenu from "react-bootstrap/esm/DropdownMenu";
+import AuthMenu from "../Auth-Area/AuthMenu";
+import DropdownItem from "react-bootstrap/esm/DropdownItem";
 
 interface MyNavbarProps {
       bodyWidth: number;
@@ -20,8 +24,8 @@ const MyNavbar = (props: MyNavbarProps) => {
       const [show, setShow] = useState(false);
       const handleClose = () => setShow(false);
       const handleShow = () => setShow(true);
-      const [subCategories, setSubCategories] = useState<SubCategoryModel[]>();
 
+      const [subCategories, setSubCategories] = useState<SubCategoryModel[]>();
       const getAllSubCategories = useCallback(async () => {
             const subCategories = await productsServices.getAllSubCategories();
             setSubCategories(subCategories);
@@ -33,7 +37,7 @@ const MyNavbar = (props: MyNavbarProps) => {
 
       return (
             <Container className="mt-2 p-0">
-
+                  {/* For Desktop */}
                   {props.bodyWidth >= 768 &&
                         <Container>
                               <Row>
@@ -86,7 +90,7 @@ const MyNavbar = (props: MyNavbarProps) => {
                               </Row>
                         </Container>
                   }
-
+                  {/* For Mobile */}
                   {props.bodyWidth < 768 &&
                         <Container fluid className="miniNav p-3">
                               <Row>
@@ -98,9 +102,18 @@ const MyNavbar = (props: MyNavbarProps) => {
                                                       </NavLink>
                                                 </Col>
                                                 <Col sm='6' xs='6' xxs='6'>
-                                                      <NavLink to={"/your-profile"}>
-                                                            <VscAccount size='1.8rem' />
-                                                      </NavLink>
+                                                      <Dropdown>
+
+                                                            <DropdownToggle as={NavLink} to={null}>
+                                                                  <VscAccount size='1.8rem' />
+                                                            </DropdownToggle>
+
+                                                            <DropdownMenu>
+                                                                  <DropdownItem eventKey={1} as={'div'}>
+                                                                        <AuthMenu />
+                                                                  </DropdownItem>
+                                                            </DropdownMenu>
+                                                      </Dropdown>
                                                 </Col>
                                           </Row>
                                     </Col>
@@ -123,7 +136,7 @@ const MyNavbar = (props: MyNavbarProps) => {
                                                       </NavLink>
                                                 </Col>
                                                 <Col sm='6' xs='6' xxs='6'>
-                                                      <NavLink to=''>
+                                                      <NavLink to={null}>
                                                             <FiMenu onClick={handleShow} size='1.8rem' />
                                                       </NavLink>
                                                 </Col>
@@ -132,7 +145,6 @@ const MyNavbar = (props: MyNavbarProps) => {
                               </Row >
                         </Container>
                   }
-
 
                   <Offcanvas show={show} onHide={handleClose} placement='end' style={{ width: '20rem' }} className="d-md-none">
                         <SideNav categories={props.categories} />
