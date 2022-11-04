@@ -36,8 +36,8 @@ const Layout = () => {
                         <MyNavbar bodyWidth={size} categories={categories} />
                   </Row>
 
-                  <Row>
-                        <Routing />
+                  <Row className="mt-2">
+                              <Routing />
                   </Row>
 
                   <Row className="footer">

@@ -50,7 +50,7 @@ const MyNavbar = (props: MyNavbarProps) => {
                   {props.bodyWidth >= 768 &&
                         <Container>
                               <Row>
-                                    <Col md='3' lg='2' xxl='2'>
+                                    <Col md='3' lg='3' xxl='2'>
                                           <InputGroup size="sm">
                                                 <Button variant="secondary">
                                                       <AiOutlineSearch />
@@ -61,7 +61,7 @@ const MyNavbar = (props: MyNavbarProps) => {
                                           </InputGroup>
                                     </Col>
 
-                                    <Col md='6' lg='8' xxl='8'>
+                                    <Col md='6' lg='7' xxl='8'>
                                           <Navbar.Brand as={NavLink} to="/">
                                                 <h3>
 

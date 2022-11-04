@@ -13,9 +13,11 @@ const SubNavbar = (props: SubNavbarProps) => {
             <>
                   <Nav fill variant="tabs">
                         {props.subCategories?.map(subCategory =>
-                              <Nav.Link as={NavLink} to="/" key={subCategory.subCategoryId}>
-                                    {subCategory.subCategory}
-                              </Nav.Link>
+                              <Nav.Item key={subCategory.subCategoryId}>
+                                    <Nav.Link as={NavLink} to={'/category/' + subCategory.categoryId + '/sub-category/' + subCategory.subCategoryId} style={{ color: 'black', border: '1px solid lightGray' }}>
+                                          {subCategory.subCategory}
+                                    </Nav.Link>
+                              </Nav.Item>
                         )}
 
                         {props.subCategories === undefined &&

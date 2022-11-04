@@ -5,6 +5,7 @@ import { authStore } from "../../Redux/Store";
 import Login from "../Auth-Area/Login";
 import Register from "../Auth-Area/Register";
 import { CartPage } from "../Pages/Cart-Page";
+import { CategoriesPages } from "../Pages/Categories-Pages";
 import HomePage from "../Pages/Home-Page";
 import { SearchPage } from "../Pages/Search-Page";
 import { UserProfile } from "../Pages/User-Profile";
@@ -27,6 +28,7 @@ const Routing = () => {
             <Routes>
                   <Route path="/" element={<HomePage />} />
                   <Route path="/product/:productId" element={<OneProduct />} />
+                  <Route path="/category/:categoryId/sub-category/:subCategoryId" element={<CategoriesPages />} />
                   <Route path="/your-cart" element={<CartPage />} />
                   <Route path="/your-profile" element={<UserProfile />} />
                   <Route path="/search" element={<SearchPage />} />

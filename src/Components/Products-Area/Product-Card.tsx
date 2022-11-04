@@ -72,6 +72,7 @@ const ProductCard = (props: ProductCardProps) => {
                               <Card className="d-inline-block m-1">
 
                                     {/* Product card images */}
+
                                     <Carousel variant="dark">
                                           <Carousel.Item >
                                                 <NavLink to={`/product/${props.product.productId}`}>
@@ -100,14 +101,16 @@ const ProductCard = (props: ProductCardProps) => {
                                           <Container className="me-auto text-muted" style={{ overflow: "hidden", height: "100px" }}>
 
                                                 <Row>
-                                                      <Card.Subtitle>
+                                                      <Card.Subtitle className='text-muted'>
                                                             {getCategoryById(props.product.categoryId)}
                                                       </Card.Subtitle>
                                                 </Row>
                                                 <Row>
                                                       <p>
-                                                            {getSubCategoryById(props.product.subCategoryId)}
-                                                      </p >
+                                                            <NavLink to={"/category/" + props.product.categoryId + "/sub-category/" + props.product.subCategoryId}>
+                                                                  {getSubCategoryById(props.product.subCategoryId)}
+                                                            </NavLink>
+                                                      </p>
 
                                                 </Row>
                                           </Container>
@@ -120,7 +123,6 @@ const ProductCard = (props: ProductCardProps) => {
                                     </Card.Body>
 
                                     <Card.Footer>
-
                                           {!inCart &&
                                                 <Button onClick={handleShow}>
                                                       Add To Cart
@@ -150,7 +152,8 @@ const ProductCard = (props: ProductCardProps) => {
                         </Col>
                   }
                   {/* For Mobile */}
-                  {size < 768 &&
+                  {
+                        size < 768 &&
                         <Col xxs='12' sm='4'>
                               <Card className="d-inline-block m-auto mt-2 w-75">
 

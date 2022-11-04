@@ -49,18 +49,19 @@ class ProductsServices {
 
       public async getAllProducts(): Promise<ProductModel[]> {
             if (productsStore.getState().products.length === 0) {
-
                   const response = await axios.get<ProductModel[]>(config.urls.products.products.allProductsUrl);
                   const products = response.data;
                   productsStore.dispatch(fetchAllProductsAction(products));
                   return products;
             }
-            const products = productsStore.getState().products;
-            return products;
+            else {
+                  const products = productsStore.getState().products;
+                  return products;
+            }
       }
 
       public async getOneProduct(productId: string): Promise<ProductModel> {
-            if (productsStore.getState().products?.length === 0) {     
+            if (productsStore.getState().products?.length === 0) {
                   const response = await axios.get<ProductModel>(config.urls.products.products.oneProductUrl + productId);
                   const product = response.data;
                   return product;

@@ -54,7 +54,7 @@ const OneProduct = () => {
       }
 
       return (
-            <Container fluid>
+            <Container>
                   <Row>
                         <Col md='6' sm='12' xs='12' xxs='12'>
                               <Image src={product?.productImage} alt='' width='100%' height='100%' />
