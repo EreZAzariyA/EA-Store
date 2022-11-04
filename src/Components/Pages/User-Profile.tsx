@@ -9,13 +9,17 @@ export const UserProfile = () => {
       const [user, setUser] = useState<UserModel>();
       useEffect(() => {
             setUser(authStore.getState().user);
-      })
+            const unsubscribe = authStore.subscribe(() => {
+                  setUser(authStore.getState().user);
+            })
+            return () => unsubscribe();
+      }, [user]);
 
       return (
             <Container>
                   {!user &&
                         <>
-                              hello guest
+                              <Login />
                         </>
                   }
                   {user &&

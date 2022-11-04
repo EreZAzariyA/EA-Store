@@ -14,6 +14,8 @@ import DropdownToggle from "react-bootstrap/esm/DropdownToggle";
 import DropdownMenu from "react-bootstrap/esm/DropdownMenu";
 import AuthMenu from "../Auth-Area/AuthMenu";
 import DropdownItem from "react-bootstrap/esm/DropdownItem";
+import { authStore } from "../../Redux/Store";
+import UserModel from "../../Models/user-model";
 
 interface MyNavbarProps {
       bodyWidth: number;
@@ -24,6 +26,7 @@ const MyNavbar = (props: MyNavbarProps) => {
       const [show, setShow] = useState(false);
       const handleClose = () => setShow(false);
       const handleShow = () => setShow(true);
+      const [user, setUser] = useState<UserModel>();
 
       const [subCategories, setSubCategories] = useState<SubCategoryModel[]>();
       const getAllSubCategories = useCallback(async () => {
@@ -32,8 +35,14 @@ const MyNavbar = (props: MyNavbarProps) => {
       }, []);
 
       useEffect(() => {
-            getAllSubCategories()
-      })
+            setUser(authStore.getState().user);
+            getAllSubCategories();
+
+            const unsubscribe = authStore.subscribe(() => {
+                  setUser(authStore.getState().user);
+            });
+            return () => unsubscribe();
+      });
 
       return (
             <Container className="mt-2 p-0">
@@ -74,9 +83,24 @@ const MyNavbar = (props: MyNavbarProps) => {
                                                                   </NavLink>
                                                             </Col>
                                                             <Col sm='6' xs='6' xxs='6'>
-                                                                  <NavLink to={"/your-profile"}>
-                                                                        <VscAccount size='1.5rem' />
-                                                                  </NavLink>
+                                                                  {!user &&
+                                                                        <NavLink to={"/your-profile"}>
+                                                                              <VscAccount size='1.5rem' />
+                                                                        </NavLink>
+                                                                  }
+                                                                  {user &&
+                                                                        <Dropdown>
+                                                                              <DropdownToggle as={NavLink} to={null}>
+                                                                                    <VscAccount size='1.5rem' />
+                                                                              </DropdownToggle>
+
+                                                                              <DropdownMenu>
+                                                                                    <DropdownItem eventKey={1} as={'div'}>
+                                                                                          <AuthMenu />
+                                                                                    </DropdownItem>
+                                                                              </DropdownMenu>
+                                                                        </Dropdown>
+                                                                  }
                                                             </Col>
                                                       </Row>
 

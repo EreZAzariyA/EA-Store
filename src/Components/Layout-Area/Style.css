@@ -1,18 +1,15 @@
-/* .MyNavbar {
-      position: fixed;
-      top: 0;
-      right: 0;
-      width: 90%;
-      background-color: white;
-      z-index: 3;
-} */
-
-/* .miniNav {
-      padding: 25px;
-} */
+.Layout {
+      display: grid;
+      height: 100%;
+      grid-template-rows: min-content auto min-content;
+}
 
 .miniNav>*>*>*>* {
       display: flex;
       flex-direction: row;
       justify-content: center;
 }
+
+/* .footer {
+      margin-top: max-content;
+} */

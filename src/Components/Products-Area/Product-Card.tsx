@@ -2,7 +2,7 @@ import { useState, useMemo, useCallback, useEffect } from "react";
 import { Button, Card, Carousel, Col, Container, Image, Modal, Row } from "react-bootstrap"
 import { numberWithCommas } from "../..";
 import ProductModel from "../../Models/Product-Model"
-import { authStore, productsStore } from "../../Redux/Store";
+import { authStore, guestStore, productsStore } from "../../Redux/Store";
 import { BsCartCheck, BsCartPlus } from "react-icons/bs";
 import { NavLink } from "react-router-dom";
 import { ItemInCartModel } from "../../Models/item-in-cart-model";
@@ -32,8 +32,13 @@ const ProductCard = (props: ProductCardProps) => {
       const [itemsInCart, setItemsInCart] = useState<ItemInCartModel[]>();
       const getItemsFromUserCartByUserId = useCallback(async () => {
             const user = authStore.getState().user;
-            const itemsInCart = await shoppingCartServices.getAllItemsFromUserCartByUserId(user?.userId);
-            setItemsInCart(itemsInCart);
+            if (user) {
+                  const itemsInCart = await shoppingCartServices.getAllItemsFromUserCartByUserId(user?.userId);
+                  setItemsInCart(itemsInCart);
+            } else {
+                  const itemsInCart = guestStore.getState().itemsInGuestCart;
+                  setItemsInCart(itemsInCart);
+            }
       }, []);
 
       const [inCart, setInCart] = useState<boolean>(false);
@@ -68,22 +73,23 @@ const ProductCard = (props: ProductCardProps) => {
 
                                     {/* Product card images */}
                                     <Carousel variant="dark">
-                                          <Carousel.Item style={{ height: '200px', width: '100%' }}>
+                                          <Carousel.Item >
                                                 <NavLink to={`/product/${props.product.productId}`}>
-                                                      <Image src={props.product.productImage} alt="" className="w-100 h-100" />
+                                                      <Image src={props.product.productImage} alt="" height={'300px'} width='90%' />
                                                 </NavLink>
                                           </Carousel.Item>
-                                          <Carousel.Item style={{ height: '200px', width: '100%' }}>
+                                          <Carousel.Item >
                                                 <NavLink to={`/product/${props.product.productId}`}>
-                                                      <Image src={props.product.productImage} alt="" className="w-100 h-100" />
+                                                      <Image src={props.product.productImage} alt="" height={'300px'} width='90%' />
                                                 </NavLink>
                                           </Carousel.Item>
-                                          <Carousel.Item style={{ height: '200px', width: '100%' }}>
+                                          <Carousel.Item >
                                                 <NavLink to={`/product/${props.product.productId}`}>
-                                                      <Image src={props.product.productImage} alt="" className="w-100 h-100" />
+                                                      <Image src={props.product.productImage} alt="" height={'300px'} width='90%' />
                                                 </NavLink>
                                           </Carousel.Item>
                                     </Carousel>
+
 
                                     <Card.Body className='p-2'>
 

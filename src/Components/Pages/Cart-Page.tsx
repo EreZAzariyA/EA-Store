@@ -1,11 +1,9 @@
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Container } from "react-bootstrap"
 import { ItemInCartModel } from "../../Models/item-in-cart-model";
 import { ShoppingCartModel } from "../../Models/shopping-cart-model";
 import UserModel from "../../Models/user-model"
 import { authStore, shoppingCartStore } from "../../Redux/Store";
-import shoppingCartServices from "../../Services/ShoppingCartServices";
-import ProductCard from "../Products-Area/Product-Card";
 import SideNavItem from "../Products-Area/SideNavItem";
 
 export const CartPage = () => {
@@ -50,7 +48,10 @@ export const CartPage = () => {
 
       return (
             <Container>
-                  Cart-Page
+                  <h3>
+                        Cart-Page
+                  </h3>
+                  
                   {itemsInCart?.map(i =>
                         <SideNavItem item={i} key={i.productId} />
                   )}
