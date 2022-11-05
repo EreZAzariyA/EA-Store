@@ -27,7 +27,6 @@ const SideNav = (props: SideNavProps) => {
             const subCategory = subCategories?.filter(subCategory => subCategory.categoryId === categoryId);
             return (
                   subCategory?.map(subC =>
-
                         <DropdownItem as={NavLink} to={'/category/' + subC.categoryId + '/sub-category/' + subC.subCategoryId} key={subC.subCategoryId} >
                               {subC.subCategory}
                         </DropdownItem>
@@ -45,17 +44,21 @@ const SideNav = (props: SideNavProps) => {
                         {props.categories &&
 
                               <Navbar collapseOnSelect expand='xs' className="justify-content-center">
+                                    <Nav>
 
-                                    {props.categories?.map(category =>
-                                          <Nav key={category?.categoryId}>
+                                                <Nav.Link as={NavLink} to="/">
+                                                      Home-Page
+                                                </Nav.Link>
+                                          {props.categories?.map(category =>
 
                                                 <NavDropdown
+                                                      key={category?.categoryId}
                                                       title={category?.category}
                                                       className="justify-content-center">
                                                       {getSubCategoriesByCategoryId(category?.categoryId)}
                                                 </NavDropdown>
-                                          </Nav>
-                                    )}
+                                          )}
+                                    </Nav>
                               </Navbar>
 
                         }
