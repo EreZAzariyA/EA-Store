@@ -17,6 +17,9 @@ import DropdownItem from "react-bootstrap/esm/DropdownItem";
 import { authStore, productsStore } from "../../Redux/Store";
 import UserModel from "../../Models/user-model";
 import { fetchAllProductsAction } from "../../Redux/Products-state";
+import axios from "axios";
+import ProductModel from "../../Models/Product-Model";
+import config from "../../Utils/Config";
 
 interface MyNavbarProps {
       bodyWidth: number;
@@ -49,33 +52,24 @@ const MyNavbar = (props: MyNavbarProps) => {
 
       const search = async (e: SyntheticEvent) => {
             const searchValue = (e.target as HTMLInputElement).value;
-            if (searchValue.length >= 1) {
-                  // First latter to upper case
-                  const searchValueFirstLetterUpperCase = searchValue.charAt(0).toUpperCase() + searchValue.slice(1);
+            // First latter to upper case
+            const searchValueFirstLetterUpperCase = searchValue.charAt(0).toUpperCase() + searchValue.slice(1);
 
-                  //If store have the full list of products (not get response from the server - faster!)
-                  if (productsStore.getState().products.length === 0) {
-                        const products = await productsServices.getAllProducts();
-                        // Get products by search value: ["Search","SEARCH","search"]
-                        const productsBySearchValue = products.filter(product => product.productName.startsWith(searchValueFirstLetterUpperCase) || product.productName.includes(searchValue) || product.productName.includes(searchValue) || product.productName.includes(searchValue.toUpperCase()));
+            if (searchValue.length >= 0) {
+                  
+                  const products = productsStore.getState().products;
 
-                        // Set products global state by search value
-                        productsStore.dispatch(fetchAllProductsAction(productsBySearchValue));
+                  // Get products by search value: ["Search","SEARCH","search"]
+                  const productsBySearchValue = products.filter(product => product.productName.startsWith(searchValueFirstLetterUpperCase));
 
-                  } else {
-                        // If the products on the store (It will load faster)
-                        const products = productsStore.getState().products;
+                  // Set products global state by search value
+                  productsStore.dispatch(fetchAllProductsAction(productsBySearchValue));
 
-                        // Get products by search value: ["Search","SEARCH","search"]
-                        const productsBySearchValue = products.filter(product => product.productName.startsWith(searchValueFirstLetterUpperCase) || product.productName.includes(searchValue) || product.productName.includes(searchValue) || product.productName.includes(searchValue.toUpperCase()));
-
-                        // Set products global state by search value
-                        productsStore.dispatch(fetchAllProductsAction(productsBySearchValue));
-                  }
             }
             // If the search field is empty, Get the full list from server (not from store. {store filtered by search field, and can not get the full list of products})
-            else if (searchValue.length === 0) {
-                  const products = await productsServices.getAllProducts();
+            if (searchValue.length === 0) {
+                  const response = await axios.get<ProductModel[]>(config.urls.products.products.allProductsUrl);
+                  const products = response.data;
                   // Fetch the full list of products to products store. (Global state)
                   productsStore.dispatch(fetchAllProductsAction(products));
             }

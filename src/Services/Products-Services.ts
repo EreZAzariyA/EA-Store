@@ -48,11 +48,14 @@ class ProductsServices {
       }
 
       public async getAllProducts(): Promise<ProductModel[]> {
-            const response = await axios.get<ProductModel[]>(config.urls.products.products.allProductsUrl);
-            const products = response.data;
-            productsStore.dispatch(fetchAllProductsAction(products));
-            return products;
-
+            if (productsStore.getState().products.length === 0) {
+                  const response = await axios.get<ProductModel[]>(config.urls.products.products.allProductsUrl);
+                  const products = response.data;
+                  productsStore.dispatch(fetchAllProductsAction(products));
+                  return products;
+            }
+            const products = productsStore.getState().products;
+            return products
       }
 
       public async getOneProduct(productId: string): Promise<ProductModel> {
