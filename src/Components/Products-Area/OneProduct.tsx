@@ -3,11 +3,11 @@ import { Button, ButtonGroup, Card, Carousel, CarouselItem, Col, Container, Imag
 import { useParams } from "react-router-dom";
 import { ItemInCartModel } from "../../Models/item-in-cart-model";
 import ProductModel from "../../Models/Product-Model";
+import { removeItemFromGuestCartAction } from "../../Redux/GuestState";
 import { authStore, guestStore, shoppingCartStore } from "../../Redux/Store";
 import notifyService from "../../Services/NotifyService";
 import productsServices from "../../Services/Products-Services";
 import shoppingCartServices from "../../Services/ShoppingCartServices";
-import ItemInCart from "./Item-In-Cart";
 
 const OneProduct = () => {
       const params = useParams();
@@ -15,49 +15,6 @@ const OneProduct = () => {
       const [stock, setStock] = useState(1);
       const [inCart, setInCart] = useState<boolean>(false);
 
-      const checkItem = useCallback(async (item: ItemInCartModel) => {
-            // If there is a user
-            if (authStore.getState().user) {
-                  const itemsInCart = shoppingCartStore.getState().itemsInCart;
-                  if (itemsInCart.find(p => p.productId === item?.productId)) {
-                        setInCart(true);
-                        setStock(item.stock);
-                  } else {
-                        setInCart(false);
-                  }
-            } else {
-                  // If there is no user
-                  const itemsInGuestCart = guestStore.getState().itemsInGuestCart;
-                  if (itemsInGuestCart.find(p => p.productId === item?.productId)) {
-                        setInCart(true);
-                        setStock(item.stock);
-                  } else {
-                        setInCart(false);
-                  }
-            }
-
-            const subscribe = shoppingCartStore.subscribe(() => {
-                  const itemsInCart = shoppingCartStore.getState().itemsInCart;
-                  if (itemsInCart.find(p => p.productId === item?.productId)) {
-                        setInCart(true);
-                  } else {
-                        setInCart(false);
-                  }
-            })
-            const guestSubscribe = guestStore.subscribe(() => {
-                  const itemsInGuestCart = guestStore.getState().itemsInGuestCart;
-                  if (itemsInGuestCart.find(p => p.productId === item?.productId)) {
-                        setInCart(true);
-                  } else {
-                        setInCart(false);
-                  }
-            })
-
-            return () => {
-                  subscribe();
-                  guestSubscribe();
-            }
-      }, []);
 
       const getProductByParams = useCallback(async () => {
             const productId = params.productId;
@@ -65,25 +22,45 @@ const OneProduct = () => {
             setProduct(product);
       }, [params.productId]);
 
-      const getProductFromCart = useCallback(async () => {
-            const productId = params.productId;
+
+      const checkItem = useCallback(async (productIdToCheck: string) => {
+
             if (authStore.getState().user) {
-                  const itemInCart = shoppingCartStore.getState().itemsInCart.find(p => p.productId === productId);
-                  checkItem(itemInCart);
-            }
-            else {
-                  const itemInGuestCart = guestStore.getState().itemsInGuestCart.find(p => p.productId === productId);
-                  checkItem(itemInGuestCart);
+                  const itemsInUserCart = shoppingCartStore.getState().itemsInCart;
+                  if (itemsInUserCart.find(item => item?.productId === productIdToCheck)) {
+                        setInCart(true)
+                  } else {
+                        setInCart(false);
+                  }
+            } else if (guestStore.getState().itemsInGuestCart.length > 0) {
+                  const itemsInGuestCart = guestStore.getState().itemsInGuestCart;
+                  if (itemsInGuestCart.find(item => item?.productId === productIdToCheck)) {
+                        setInCart(true)
+                  } else {
+                        setInCart(false);
+                  }
             }
 
-
-      }, [params.productId]);
+      }, [product?.productId]);
 
       useEffect(() => {
             getProductByParams();
-            // If there is a user:
-            getProductFromCart();
+            checkItem(product?.productId);
+
+
+            const userSubscribe = shoppingCartStore.subscribe(() => {
+                  checkItem(product?.productId);
+            })
+            const guestSubscribe = guestStore.subscribe(() => {
+                  checkItem(product?.productId);
+            })
+
+            return () => {
+                  userSubscribe();
+                  guestSubscribe();
+            }
       });
+
 
       const plus = () => {
             setStock(stock + 1);
@@ -112,10 +89,24 @@ const OneProduct = () => {
             }
       }
 
-      const removeFromCart = () => {
-
+      const removeFromCart = async () => {
+            if (authStore.getState().user) {
+                  try {
+                        await shoppingCartServices.deleteItemFromCart(product?.productId, shoppingCartStore
+                              .getState().shoppingCart.userCartId);
+                  } catch (err: any) {
+                        notifyService.error(err.message);
+                  }
+            } else {
+                  guestStore.dispatch(removeItemFromGuestCartAction(product?.productId));
+                  notifyService.error('Removed from cart');
+                  setInCart(false)
+            }
       }
 
+      const test = () => {
+
+      }
       return (
             <Container className="mt-3">
                   <Row>
@@ -132,7 +123,7 @@ const OneProduct = () => {
                                           </Card.Text>
 
                                           <Row >
-                                                <ButtonGroup className="w-50 m-auto">
+                                                <ButtonGroup className="w-50 m-auto" onChange={test}>
 
                                                       <Button onClick={plus}>
                                                             +
