@@ -25,10 +25,13 @@ export interface GuestsAction {
 
 export function fetchGuestItemsAction(itemInCart: ItemInCartModel[]): GuestsAction {
       return { type: GuestsActionType.FetchGuestItemsAction, payload: itemInCart };
-}
+};
 export function addItemIntoGuestCartCartAction(itemToAdd: ItemInCartModel): GuestsAction {
       return { type: GuestsActionType.AddItemIntoGuestCartAction, payload: itemToAdd };
-}
+};
+export function removeItemFromGuestCartAction(itemIdToDelete: string): GuestsAction {
+      return { type: GuestsActionType.RemoveItemFromGuestCart, payload: itemIdToDelete };
+};
 
 export function guestsReducer(currentGuestsState: GuestsState = new GuestsState(), action: GuestsAction): GuestsState {
       const newGuestsState = { ...currentGuestsState };
@@ -37,6 +40,12 @@ export function guestsReducer(currentGuestsState: GuestsState = new GuestsState(
 
             case GuestsActionType.AddItemIntoGuestCartAction:
                   newGuestsState.itemsInGuestCart.push(action.payload);
+                  localStorage.setItem('itemsInGuestCart', JSON.stringify(newGuestsState.itemsInGuestCart));
+                  break;
+
+            case GuestsActionType.RemoveItemFromGuestCart:
+                  const newList = newGuestsState.itemsInGuestCart.filter(i => i.productId !== action.payload);
+                  newGuestsState.itemsInGuestCart = newList;
                   localStorage.setItem('itemsInGuestCart', JSON.stringify(newGuestsState.itemsInGuestCart));
                   break;
       }

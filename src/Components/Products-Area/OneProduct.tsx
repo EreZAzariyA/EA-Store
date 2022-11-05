@@ -1,14 +1,27 @@
 import { useCallback, useState, useEffect } from "react";
-import { Button, ButtonGroup, Card, Col, Container, Image, Row } from "react-bootstrap"
+import { Button, ButtonGroup, Card, Carousel, CarouselItem, Col, Container, Image, Row } from "react-bootstrap"
 import { useParams } from "react-router-dom";
+import { ItemInCartModel } from "../../Models/item-in-cart-model";
 import ProductModel from "../../Models/Product-Model";
 import { authStore, shoppingCartStore } from "../../Redux/Store";
+import notifyService from "../../Services/NotifyService";
 import productsServices from "../../Services/Products-Services";
+import shoppingCartServices from "../../Services/ShoppingCartServices";
+import ItemInCart from "./Item-In-Cart";
 
 const OneProduct = () => {
       const params = useParams();
       const [product, setProduct] = useState<ProductModel>();
-      const [stock, setStock] = useState(0);
+      const [stock, setStock] = useState(1);
+      const [inCart, setInCart] = useState<boolean>(false);
+
+      const checkItem = useCallback(async (item: ProductModel) => {
+            if (item?.productId === product?.productId) {
+                  setInCart(true);
+            } else {
+                  setInCart(false);
+            }
+      }, []);
 
       const getProductByParams = useCallback(async () => {
             const productId = params.productId;
@@ -35,31 +48,49 @@ const OneProduct = () => {
                   }
             }
       }, [params.productId]);
-      
+
       useEffect(() => {
             getProductByParams();
             // If there is a user:
             getProductFromCart();
-      },[]);
+            checkItem(product);
+            
+      }, [product,checkItem]);
 
       const plus = () => {
             setStock(stock + 1);
-      }
+      };
       const minus = () => {
             if (stock === 0) {
                   return;
             } else {
                   setStock(stock - 1);
             }
+      };
+
+
+      const addToCart = async () => {
+            const itemToAdd = new ItemInCartModel();
+            itemToAdd.productId = product?.productId;
+            itemToAdd.stock = stock;
+            itemToAdd.totalPrice = stock * product?.productPrice;
+            itemToAdd.userCartId = shoppingCartStore.getState().shoppingCart?.userCartId;
+
+            try {
+                  await shoppingCartServices.addItemIntoCart(itemToAdd);
+                  notifyService.success("Added successfully...")
+            } catch (err: any) {
+                  notifyService.error(err);
+            }
+      }
+
+      const removeFromCart = () => {
+
       }
 
       return (
-            <Container>
+            <Container className="mt-3">
                   <Row>
-                        <Col md='6' sm='12' xs='12' xxs='12'>
-                              <Image src={product?.productImage} alt='' width='100%' height='100%' />
-                        </Col>
-
                         <Col md='6' sm='12' xs='12' xxs='12' >
                               <Card className="text-center m-auto">
                                     <Card.Header>
@@ -89,7 +120,36 @@ const OneProduct = () => {
                                                 </ButtonGroup>
                                           </Row>
                                     </Card.Body>
+                                    <Card.Footer>
+                                          {!inCart &&
+                                                <Button className="w-100 m-1" onClick={addToCart}>Add To Cart</Button>
+                                          }
+                                          {inCart &&
+                                                <Button className="w-100 m-1" variant="danger" onClick={removeFromCart}>Remove From Cart</Button>
+
+                                          }
+
+                                          <Button className="w-100 m-1" variant="dark">Buy Now</Button>
+                                    </Card.Footer>
                               </Card>
+                        </Col>
+                        <Col md='6' sm='12' xs='12' xxs='12'>
+                              <Carousel variant="dark">
+                                    <CarouselItem>
+                                          <Image src={product?.productImage} alt='' width='350px' height='350px' />
+                                          <Carousel.Caption>
+                                                <h5>First Image</h5>
+                                                <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit.</p>
+                                          </Carousel.Caption>
+                                    </CarouselItem>
+                                    <CarouselItem>
+                                          <Image src={product?.productImage} alt='' width='350px' height='350px' />
+                                          <Carousel.Caption>
+                                                <h5>Seconde Image</h5>
+                                                <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit.</p>
+                                          </Carousel.Caption>
+                                    </CarouselItem>
+                              </Carousel>
                         </Col>
                   </Row>
             </Container>

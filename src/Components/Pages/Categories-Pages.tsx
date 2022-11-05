@@ -21,7 +21,7 @@ export const CategoriesPages = () => {
       return (
             <Container>
                   <Container fluid>
-                        <Row>
+                        <Row className="justify-content-center">
                               {products?.map(product =>
                                     <ProductCard key={product.productId} product={product} />
                               )}

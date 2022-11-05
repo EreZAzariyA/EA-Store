@@ -68,88 +68,86 @@ const ProductCard = (props: ProductCardProps) => {
             <>
                   {/* For Desktop */}
                   {size >= 768 &&
-                        <Col md='4' lg='3' xxl='2'>
-                              <Card className="d-inline-block m-1">
+                        <Card className="d-inline-block m-1" style={{ width: '18rem' }}>
 
-                                    {/* Product card images */}
+                              {/* Product card images */}
 
-                                    <Carousel variant="dark">
-                                          <Carousel.Item >
-                                                <NavLink to={`/product/${props.product.productId}`}>
-                                                      <Image src={props.product.productImage} alt="" height={'300px'} width='90%' />
-                                                </NavLink>
-                                          </Carousel.Item>
-                                          <Carousel.Item >
-                                                <NavLink to={`/product/${props.product.productId}`}>
-                                                      <Image src={props.product.productImage} alt="" height={'300px'} width='90%' />
-                                                </NavLink>
-                                          </Carousel.Item>
-                                          <Carousel.Item >
-                                                <NavLink to={`/product/${props.product.productId}`}>
-                                                      <Image src={props.product.productImage} alt="" height={'300px'} width='90%' />
-                                                </NavLink>
-                                          </Carousel.Item>
-                                    </Carousel>
-
-
-                                    <Card.Body className='p-2'>
-
-                                          <Card.Title style={{ overflow: "hidden", height: "50px" }}>
-                                                {props.product.productName}
-                                          </Card.Title>
-
-                                          <Container className="me-auto text-muted" style={{ overflow: "hidden", height: "100px" }}>
-
-                                                <Row>
-                                                      <Card.Subtitle className='text-muted'>
-                                                            {getCategoryById(props.product.categoryId)}
-                                                      </Card.Subtitle>
-                                                </Row>
-                                                <Row>
-                                                      <p>
-                                                            <NavLink to={"/category/" + props.product.categoryId + "/sub-category/" + props.product.subCategoryId}>
-                                                                  {getSubCategoryById(props.product.subCategoryId)}
-                                                            </NavLink>
-                                                      </p>
-
-                                                </Row>
-                                          </Container>
-
-                                          <h6>
-                                                {numberWithCommas(props.product.productPrice) + '$'}
-                                          </h6>
+                              <Carousel variant="dark">
+                                    <Carousel.Item>
+                                          <NavLink to={`/product/${props.product.productId}`}>
+                                                <Card.Img src={props.product.productImage} alt="" variant="top" height={'300px'} />
+                                          </NavLink>
+                                    </Carousel.Item>
+                                    <Carousel.Item>
+                                          <NavLink to={`/product/${props.product.productId}`}>
+                                                <Card.Img src={props.product.productImage} alt="" variant="top" height={'300px'} />
+                                          </NavLink>
+                                    </Carousel.Item>
+                                    <Carousel.Item>
+                                          <NavLink to={`/product/${props.product.productId}`}>
+                                                <Card.Img src={props.product.productImage} alt="" variant="top" height={'300px'} />
+                                          </NavLink>
+                                    </Carousel.Item>
+                              </Carousel>
 
 
-                                    </Card.Body>
+                              <Card.Body className='p-2'>
 
-                                    <Card.Footer>
-                                          {!inCart &&
-                                                <Button onClick={handleShow}>
-                                                      Add To Cart
-                                                      <BsCartPlus className="m-1" />
-                                                </Button>
-                                          }
-                                          {inCart &&
-                                                <Button variant="success">
-                                                      In Cart
-                                                      <BsCartCheck className="m-1" />
-                                                </Button>
-                                          }
+                                    <Card.Title style={{ overflow: "hidden", height: "50px" }}>
+                                          {props.product.productName}
+                                    </Card.Title>
+
+                                    <Container className="me-auto text-muted" style={{ overflow: "hidden", height: "100px" }}>
+
+                                          <Row>
+                                                <Card.Subtitle className='text-muted'>
+                                                      {getCategoryById(props.product.categoryId)}
+                                                </Card.Subtitle>
+                                          </Row>
+                                          <Row>
+                                                <p>
+                                                      <NavLink to={"/category/" + props.product.categoryId + "/sub-category/" + props.product.subCategoryId}>
+                                                            {getSubCategoryById(props.product.subCategoryId)}
+                                                      </NavLink>
+                                                </p>
+
+                                          </Row>
+                                    </Container>
+
+                                    <h6>
+                                          {numberWithCommas(props.product.productPrice) + '$'}
+                                    </h6>
 
 
-                                    </Card.Footer>
+                              </Card.Body>
 
+                              <Card.Footer>
+                                    {!inCart &&
+                                          <Button onClick={handleShow}>
+                                                Add To Cart
+                                                <BsCartPlus className="m-1" />
+                                          </Button>
+                                    }
+                                    {inCart &&
+                                          <Button variant="success">
+                                                In Cart
+                                                <BsCartCheck className="m-1" />
+                                          </Button>
+                                    }
+
+
+                              </Card.Footer>
 
 
 
-                                    {/* <Button variant="success">
+
+                              {/* <Button variant="success">
                                           In-Cart
                                           <BsCartCheck className="m-1" />
                                     </Button> */}
 
-                              </Card>
+                        </Card>
 
-                        </Col>
                   }
                   {/* For Mobile */}
                   {
