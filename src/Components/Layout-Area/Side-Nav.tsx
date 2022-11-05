@@ -1,4 +1,4 @@
-import { Container, Nav, Navbar, NavLink, Offcanvas } from "react-bootstrap";
+import { Container, Nav, Navbar, Offcanvas } from "react-bootstrap";
 import CategoryModel from "../../Models/Category-Model";
 import { useCallback, useEffect, useState } from "react"
 import SubCategoryModel from "../../Models/sub-category-model";
@@ -27,7 +27,7 @@ const SideNav = (props: SideNavProps) => {
             return (
                   subCategory?.map(subC =>
 
-                        <Nav.Link key={subC.subCategoryId}>
+                        <Nav.Link href={'/category/' + subC.categoryId + '/sub-category/' + subC.subCategoryId} key={subC.subCategoryId} >
                               {subC.subCategory}
                         </Nav.Link>
                   )
@@ -44,16 +44,14 @@ const SideNav = (props: SideNavProps) => {
                         {props.categories &&
                               <Nav variant="tabs" className="flex-column">
                                     {props.categories?.map(category =>
-                                          <Navbar expand='xs' key={category.categoryId} className="justify-content-center">
-                                                <Navbar.Toggle value={category.categoryId} style={{ borderRadius: '0' }}>
-                                                      {category.category}
+                                          <Navbar expand='xs' className="justify-content-center">
+                                                <Navbar.Toggle>
+                                                      {category?.category}
                                                       <IoMdArrowDropdown />
                                                 </Navbar.Toggle>
-
-
                                                 <Navbar.Collapse>
                                                       <Nav>
-                                                            {getSubCategoriesByCategoryId(category.categoryId)}
+                                                            {getSubCategoriesByCategoryId(category?.categoryId)}
                                                       </Nav>
                                                 </Navbar.Collapse>
                                           </Navbar>

@@ -1,5 +1,5 @@
 import { useState, useMemo, useCallback, useEffect } from "react";
-import { Button, Card, Carousel, Col, Container, Image, Modal, Row } from "react-bootstrap"
+import { Button, Card, Carousel, Container, Image, Modal, Row } from "react-bootstrap"
 import { numberWithCommas } from "../..";
 import ProductModel from "../../Models/Product-Model"
 import { authStore, guestStore, productsStore } from "../../Redux/Store";
@@ -152,7 +152,8 @@ const ProductCard = (props: ProductCardProps) => {
                   {/* For Mobile */}
                   {
                         size < 768 &&
-                        <Card className="d-inline-block m-1" style={{ width: '15rem' }}>
+                        <Card className="d-inline-block m-1 p-2" style={{ width: '15rem' }}>
+
 
                               {/* Product card images */}
                               <Carousel variant="dark">
@@ -173,7 +174,7 @@ const ProductCard = (props: ProductCardProps) => {
                                     </Carousel.Item>
                               </Carousel>
 
-                              <Card.Body className='p-2'>
+                              <Card.Body>
 
                                     <Card.Title style={{ overflow: "hidden", height: "50px" }}>
                                           {props.product.productName}
@@ -215,15 +216,6 @@ const ProductCard = (props: ProductCardProps) => {
                                           </Button>
                                     }
                               </Card.Footer>
-
-
-
-
-                              {/* <Button variant="success">
-                                          In-Cart
-                                          <BsCartCheck className="m-1" />
-                                    </Button> */}
-
                         </Card>
                   }
 

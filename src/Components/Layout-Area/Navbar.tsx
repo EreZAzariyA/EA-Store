@@ -1,5 +1,5 @@
 import { useCallback, useState, useEffect, SyntheticEvent } from "react";
-import { Navbar, Container, Row, Col, Button, Offcanvas, Form, InputGroup, Dropdown } from "react-bootstrap"
+import { Navbar, Container, Row, Col, Offcanvas, Form, Dropdown } from "react-bootstrap"
 import { NavLink } from "react-router-dom";
 import { AiOutlineSearch, AiOutlineShoppingCart } from "react-icons/ai";
 import { VscAccount } from "react-icons/vsc";
@@ -31,7 +31,7 @@ const MyNavbar = (props: MyNavbarProps) => {
 
       const [user, setUser] = useState<UserModel>();
       const [subCategories, setSubCategories] = useState<SubCategoryModel[]>();
-      
+
       const getAllSubCategories = useCallback(async () => {
             const subCategories = await productsServices.getAllSubCategories();
             setSubCategories(subCategories);
