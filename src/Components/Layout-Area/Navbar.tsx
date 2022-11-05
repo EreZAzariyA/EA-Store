@@ -148,9 +148,10 @@ const MyNavbar = (props: MyNavbarProps) => {
                               </Row>
                         </Container>
                   }
+
                   {/* For Mobile */}
                   {props.bodyWidth < 768 &&
-                        <Container fluid className="miniNav p-3">
+                        <Container fluid className="p-3">
                               <Row>
                                     <Col sm='2' xs='2' xxs='3'>
                                           <Row>

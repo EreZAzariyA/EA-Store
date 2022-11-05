@@ -1,4 +1,4 @@
-import { Container, Nav, Navbar, Offcanvas } from "react-bootstrap";
+import { Container, Nav, Navbar, NavLink, Offcanvas } from "react-bootstrap";
 import CategoryModel from "../../Models/Category-Model";
 import { useCallback, useEffect, useState } from "react"
 import SubCategoryModel from "../../Models/sub-category-model";
@@ -27,7 +27,9 @@ const SideNav = (props: SideNavProps) => {
             return (
                   subCategory?.map(subC =>
 
-                        <Nav.Link key={subC.subCategoryId}>{subC.subCategory}</Nav.Link>
+                        <Nav.Link key={subC.subCategoryId}>
+                              {subC.subCategory}
+                        </Nav.Link>
                   )
             );
       }
@@ -42,7 +44,7 @@ const SideNav = (props: SideNavProps) => {
                         {props.categories &&
                               <Nav variant="tabs" className="flex-column">
                                     {props.categories?.map(category =>
-                                          <Navbar expand='xs' key={category.categoryId} className="justify-content-around">
+                                          <Navbar expand='xs' key={category.categoryId} className="justify-content-center">
                                                 <Navbar.Toggle value={category.categoryId} style={{ borderRadius: '0' }}>
                                                       {category.category}
                                                       <IoMdArrowDropdown />
@@ -51,9 +53,7 @@ const SideNav = (props: SideNavProps) => {
 
                                                 <Navbar.Collapse>
                                                       <Nav>
-                                                            <Nav.Item>
-                                                                  {getSubCategoriesByCategoryId(category.categoryId)}
-                                                            </Nav.Item>
+                                                            {getSubCategoriesByCategoryId(category.categoryId)}
                                                       </Nav>
                                                 </Navbar.Collapse>
                                           </Navbar>
@@ -63,31 +63,8 @@ const SideNav = (props: SideNavProps) => {
 
                         {props.categories === undefined &&
                               <Nav variant="tabs" className="flex-column">
-
                                     <UndefinedNav length={6} colWidth={8} />
                               </Nav>
-                              // <>
-                              //       <Nav.Item>
-                              //             <Nav.Link>
-                              //                   <span className="placeholder placeholder-wave col-6"></span>
-                              //             </Nav.Link>
-                              //       </Nav.Item>
-                              //       <Nav.Item>
-                              //             <Nav.Link>
-                              //                   <span className="placeholder placeholder-wave col-6"></span>
-                              //             </Nav.Link>
-                              //       </Nav.Item>
-                              //       <Nav.Item>
-                              //             <Nav.Link>
-                              //                   <span className="placeholder placeholder-wave col-6"></span>
-                              //             </Nav.Link>
-                              //       </Nav.Item>
-                              //       <Nav.Item>
-                              //             <Nav.Link>
-                              //                   <span className="placeholder placeholder-wave col-6"></span>
-                              //             </Nav.Link>
-                              //       </Nav.Item>
-                              // </>
                         }
                   </Offcanvas.Body>
             </Container>
