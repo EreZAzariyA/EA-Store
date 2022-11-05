@@ -3,7 +3,7 @@ import { Button, ButtonGroup, Card, Carousel, CarouselItem, Col, Container, Imag
 import { useParams } from "react-router-dom";
 import { ItemInCartModel } from "../../Models/item-in-cart-model";
 import ProductModel from "../../Models/Product-Model";
-import { authStore, shoppingCartStore } from "../../Redux/Store";
+import { authStore, guestStore, shoppingCartStore } from "../../Redux/Store";
 import notifyService from "../../Services/NotifyService";
 import productsServices from "../../Services/Products-Services";
 import shoppingCartServices from "../../Services/ShoppingCartServices";
@@ -15,11 +15,47 @@ const OneProduct = () => {
       const [stock, setStock] = useState(1);
       const [inCart, setInCart] = useState<boolean>(false);
 
-      const checkItem = useCallback(async (item: ProductModel) => {
-            if (item?.productId === product?.productId) {
-                  setInCart(true);
+      const checkItem = useCallback(async (item: ItemInCartModel) => {
+            // If there is a user
+            if (authStore.getState().user) {
+                  const itemsInCart = shoppingCartStore.getState().itemsInCart;
+                  if (itemsInCart.find(p => p.productId === item?.productId)) {
+                        setInCart(true);
+                        setStock(item.stock);
+                  } else {
+                        setInCart(false);
+                  }
             } else {
-                  setInCart(false);
+                  // If there is no user
+                  const itemsInGuestCart = guestStore.getState().itemsInGuestCart;
+                  if (itemsInGuestCart.find(p => p.productId === item?.productId)) {
+                        setInCart(true);
+                        setStock(item.stock);
+                  } else {
+                        setInCart(false);
+                  }
+            }
+
+            const subscribe = shoppingCartStore.subscribe(() => {
+                  const itemsInCart = shoppingCartStore.getState().itemsInCart;
+                  if (itemsInCart.find(p => p.productId === item?.productId)) {
+                        setInCart(true);
+                  } else {
+                        setInCart(false);
+                  }
+            })
+            const guestSubscribe = guestStore.subscribe(() => {
+                  const itemsInGuestCart = guestStore.getState().itemsInGuestCart;
+                  if (itemsInGuestCart.find(p => p.productId === item?.productId)) {
+                        setInCart(true);
+                  } else {
+                        setInCart(false);
+                  }
+            })
+
+            return () => {
+                  subscribe();
+                  guestSubscribe();
             }
       }, []);
 
@@ -29,33 +65,25 @@ const OneProduct = () => {
             setProduct(product);
       }, [params.productId]);
 
-      // const getCategoryNameById = (categoryId: string) => {
-      //       const category = productsStore.getState().categories?.find(c => c.categoryId === categoryId);
-      //       return category?.category
-      // };
-
-      // const getSubCategoryNameById = (subCategoryId: string) => {
-      //       const subCategory = productsStore.getState().subCategories?.find(c => c.subCategoryId === subCategoryId);
-      //       return subCategory?.subCategory;
-      // };
-
       const getProductFromCart = useCallback(async () => {
             const productId = params.productId;
             if (authStore.getState().user) {
-                  const product = shoppingCartStore.getState().itemsInCart.find(p => p.productId === productId);
-                  if (product) {
-                        setStock(product.stock);
-                  }
+                  const itemInCart = shoppingCartStore.getState().itemsInCart.find(p => p.productId === productId);
+                  checkItem(itemInCart);
             }
+            else {
+                  const itemInGuestCart = guestStore.getState().itemsInGuestCart.find(p => p.productId === productId);
+                  checkItem(itemInGuestCart);
+            }
+
+
       }, [params.productId]);
 
       useEffect(() => {
             getProductByParams();
             // If there is a user:
             getProductFromCart();
-            checkItem(product);
-            
-      }, [product,checkItem]);
+      });
 
       const plus = () => {
             setStock(stock + 1);

@@ -37,7 +37,7 @@ const Layout = () => {
                   </Row>
 
                   <Row>
-                        <Container>
+                        <Container fluid>
                               <Routing />
                         </Container>
                   </Row>

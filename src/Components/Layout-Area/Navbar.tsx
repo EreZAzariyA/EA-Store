@@ -1,4 +1,4 @@
-import { useCallback, useState, useEffect } from "react";
+import { useCallback, useState, useEffect, SyntheticEvent } from "react";
 import { Navbar, Container, Row, Col, Button, Offcanvas, Form, InputGroup, Dropdown } from "react-bootstrap"
 import { NavLink } from "react-router-dom";
 import { AiOutlineSearch, AiOutlineShoppingCart } from "react-icons/ai";
@@ -14,8 +14,9 @@ import DropdownToggle from "react-bootstrap/esm/DropdownToggle";
 import DropdownMenu from "react-bootstrap/esm/DropdownMenu";
 import AuthMenu from "../Auth-Area/AuthMenu";
 import DropdownItem from "react-bootstrap/esm/DropdownItem";
-import { authStore } from "../../Redux/Store";
+import { authStore, productsStore } from "../../Redux/Store";
 import UserModel from "../../Models/user-model";
+import { fetchAllProductsAction } from "../../Redux/Products-state";
 
 interface MyNavbarProps {
       bodyWidth: number;
@@ -23,12 +24,14 @@ interface MyNavbarProps {
 }
 
 const MyNavbar = (props: MyNavbarProps) => {
+      // For mobile side Nav
       const [show, setShow] = useState(false);
       const handleClose = () => setShow(false);
       const handleShow = () => setShow(true);
-      const [user, setUser] = useState<UserModel>();
 
+      const [user, setUser] = useState<UserModel>();
       const [subCategories, setSubCategories] = useState<SubCategoryModel[]>();
+      
       const getAllSubCategories = useCallback(async () => {
             const subCategories = await productsServices.getAllSubCategories();
             setSubCategories(subCategories);
@@ -42,23 +45,54 @@ const MyNavbar = (props: MyNavbarProps) => {
                   setUser(authStore.getState().user);
             });
             return () => unsubscribe();
-      });
+      }, [getAllSubCategories]);
+
+      const search = async (e: SyntheticEvent) => {
+            const searchValue = (e.target as HTMLInputElement).value;
+            if (searchValue.length >= 1) {
+                  // First latter to upper case
+                  const searchValueFirstLetterUpperCase = searchValue.charAt(0).toUpperCase() + searchValue.slice(1);
+
+                  //If store have the full list of products (not get response from the server - faster!)
+                  if (productsStore.getState().products.length === 0) {
+                        const products = await productsServices.getAllProducts();
+                        // Get products by search value: ["Search","SEARCH","search"]
+                        const productsBySearchValue = products.filter(product => product.productName.startsWith(searchValueFirstLetterUpperCase) || product.productName.includes(searchValue) || product.productName.includes(searchValue) || product.productName.includes(searchValue.toUpperCase()));
+
+                        // Set products global state by search value
+                        productsStore.dispatch(fetchAllProductsAction(productsBySearchValue));
+
+                  } else {
+                        // If the products on the store (It will load faster)
+                        const products = productsStore.getState().products;
+
+                        // Get products by search value: ["Search","SEARCH","search"]
+                        const productsBySearchValue = products.filter(product => product.productName.startsWith(searchValueFirstLetterUpperCase) || product.productName.includes(searchValue) || product.productName.includes(searchValue) || product.productName.includes(searchValue.toUpperCase()));
+
+                        // Set products global state by search value
+                        productsStore.dispatch(fetchAllProductsAction(productsBySearchValue));
+                  }
+            }
+            // If the search field is empty, Get the full list from server (not from store. {store filtered by search field, and can not get the full list of products})
+            else if (searchValue.length === 0) {
+                  const products = await productsServices.getAllProducts();
+                  // Fetch the full list of products to products store. (Global state)
+                  productsStore.dispatch(fetchAllProductsAction(products));
+            }
+      }
 
       return (
             <Container className="mt-2 p-0">
                   {/* For Desktop */}
                   {props.bodyWidth >= 768 &&
                         <Container>
+                              {/* Header buttons */}
                               <Row>
                                     <Col md='3' lg='3' xxl='2'>
-                                          <InputGroup size="sm">
-                                                <Button variant="secondary">
-                                                      <AiOutlineSearch />
-                                                </Button>
-                                                <Form.Control
-                                                      placeholder="Search"
-                                                />
-                                          </InputGroup>
+
+                                          <Form.Control onChange={search}
+                                                placeholder="Search"
+                                          />
                                     </Col>
 
                                     <Col md='6' lg='7' xxl='8'>

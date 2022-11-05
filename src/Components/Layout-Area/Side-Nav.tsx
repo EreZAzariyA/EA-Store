@@ -1,9 +1,10 @@
-import { Button, Col, Container, DropdownButton, Nav, Navbar, NavLink, Offcanvas, Row } from "react-bootstrap";
+import { Container, Nav, Navbar, Offcanvas } from "react-bootstrap";
 import CategoryModel from "../../Models/Category-Model";
 import { useCallback, useEffect, useState } from "react"
 import SubCategoryModel from "../../Models/sub-category-model";
 import productsServices from "../../Services/Products-Services";
 import { IoMdArrowDropdown } from "react-icons/io"
+import { UndefinedNav } from "./Sub-Navbar";
 
 interface SideNavProps {
       categories: CategoryModel[];
@@ -38,28 +39,56 @@ const SideNav = (props: SideNavProps) => {
                   </Offcanvas.Header>
 
                   <Offcanvas.Body>
-                        <Nav className="flex-column">
-                              {props.categories?.map(category =>
-                                    <Navbar expand='xs' key={category.categoryId} className="justify-content-around">
-
-                                          <Navbar.Toggle value={category.categoryId} style={{ borderRadius: '0' }}>
-                                                {category.category}
-                                                <IoMdArrowDropdown />
-                                          </Navbar.Toggle>
-
-
-                                          <Navbar.Collapse>
-                                                <Nav>
-                                                      <Nav.Item>
-                                                            {getSubCategoriesByCategoryId(category.categoryId)}
-                                                      </Nav.Item>
-                                                </Nav>
-                                          </Navbar.Collapse>
-                                    </Navbar>
-                              )}
+                        {props.categories &&
+                              <Nav variant="tabs" className="flex-column">
+                                    {props.categories?.map(category =>
+                                          <Navbar expand='xs' key={category.categoryId} className="justify-content-around">
+                                                <Navbar.Toggle value={category.categoryId} style={{ borderRadius: '0' }}>
+                                                      {category.category}
+                                                      <IoMdArrowDropdown />
+                                                </Navbar.Toggle>
 
 
-                        </Nav>
+                                                <Navbar.Collapse>
+                                                      <Nav>
+                                                            <Nav.Item>
+                                                                  {getSubCategoriesByCategoryId(category.categoryId)}
+                                                            </Nav.Item>
+                                                      </Nav>
+                                                </Navbar.Collapse>
+                                          </Navbar>
+                                    )}
+                              </Nav>
+                        }
+
+                        {props.categories === undefined &&
+                              <Nav variant="tabs" className="flex-column">
+
+                                    <UndefinedNav length={6} colWidth={8} />
+                              </Nav>
+                              // <>
+                              //       <Nav.Item>
+                              //             <Nav.Link>
+                              //                   <span className="placeholder placeholder-wave col-6"></span>
+                              //             </Nav.Link>
+                              //       </Nav.Item>
+                              //       <Nav.Item>
+                              //             <Nav.Link>
+                              //                   <span className="placeholder placeholder-wave col-6"></span>
+                              //             </Nav.Link>
+                              //       </Nav.Item>
+                              //       <Nav.Item>
+                              //             <Nav.Link>
+                              //                   <span className="placeholder placeholder-wave col-6"></span>
+                              //             </Nav.Link>
+                              //       </Nav.Item>
+                              //       <Nav.Item>
+                              //             <Nav.Link>
+                              //                   <span className="placeholder placeholder-wave col-6"></span>
+                              //             </Nav.Link>
+                              //       </Nav.Item>
+                              // </>
+                        }
                   </Offcanvas.Body>
             </Container>
       )
