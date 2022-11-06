@@ -36,14 +36,14 @@ const HomePage = () => {
                   <Row>
                         <Carousel fade variant="dark">
                               <CarouselItem>
-                                    <Image src={photo} alt="" width={'100%'} height={'40%'} />
+                                    <Image src={photo} alt="" width={'100%'}/>
                                     <Carousel.Caption>
                                           <h3>Welcome</h3>
                                           <p>Lorem ipsum dolor sit amet consectetur adipisicing elit.</p>
                                     </Carousel.Caption>
                               </CarouselItem>
                               <CarouselItem>
-                                    <Image src={photo} alt="" width={'100%'} height={'40%'} />
+                                    <Image src={photo} alt="" width={'100%'}/>
                                     <Carousel.Caption>
                                           <h3>New UI</h3>
                                           <p>optio fuga beatae amet dolorum provident omnis.</p>

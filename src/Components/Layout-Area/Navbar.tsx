@@ -1,5 +1,5 @@
 import { useCallback, useState, useEffect, SyntheticEvent } from "react";
-import { Navbar, Container, Row, Col, Offcanvas, Form, Dropdown } from "react-bootstrap"
+import { Navbar, Container, Row, Col, Offcanvas, Form, Dropdown, Button, Nav, FloatingLabel } from "react-bootstrap"
 import { NavLink } from "react-router-dom";
 import { AiOutlineSearch, AiOutlineShoppingCart } from "react-icons/ai";
 import { VscAccount } from "react-icons/vsc";
@@ -20,6 +20,8 @@ import { fetchAllProductsAction } from "../../Redux/Products-state";
 import axios from "axios";
 import ProductModel from "../../Models/Product-Model";
 import config from "../../Utils/Config";
+import Role from "../../Models/role";
+import DropdownContext from "react-bootstrap/esm/DropdownContext";
 
 interface MyNavbarProps {
       bodyWidth: number;
@@ -56,7 +58,7 @@ const MyNavbar = (props: MyNavbarProps) => {
             const searchValueFirstLetterUpperCase = searchValue.charAt(0).toUpperCase() + searchValue.slice(1);
 
             if (searchValue.length >= 0) {
-                  
+
                   const products = productsStore.getState().products;
 
                   // Get products by search value: ["Search","SEARCH","search"]
@@ -84,17 +86,20 @@ const MyNavbar = (props: MyNavbarProps) => {
                               <Row>
                                     <Col md='3' lg='3' xxl='2'>
 
-                                          <Form.Control onChange={search}
-                                                placeholder="Search"
-                                          />
+                                          <FloatingLabel label='Search' className="m-1">
+                                                <Form.Control onChange={search}
+                                                      placeholder="Search"
+                                                />
+                                          </FloatingLabel>
                                     </Col>
 
                                     <Col md='6' lg='7' xxl='8'>
-                                          <Navbar.Brand as={NavLink} to="/">
-                                                <h3>
-
-                                                      EA<strong>Store</strong>
-                                                </h3>
+                                          <Navbar.Brand>
+                                                <h1>
+                                                      <Nav.Link as={NavLink} to="/">
+                                                            EA<strong style={{ color: "lightblue" }}>Store</strong>
+                                                      </Nav.Link>
+                                                </h1>
                                           </Navbar.Brand>
                                     </Col>
 
@@ -107,25 +112,66 @@ const MyNavbar = (props: MyNavbarProps) => {
                                                       <Row>
                                                             <Col sm='6' xs='6' xxs='6'>
                                                                   <NavLink to={"/your-cart"}>
-                                                                        <AiOutlineShoppingCart size='1.5rem' />
+                                                                        <AiOutlineShoppingCart size='2rem' />
                                                                   </NavLink>
                                                             </Col>
                                                             <Col sm='6' xs='6' xxs='6'>
                                                                   {!user &&
-                                                                        <NavLink to={"/your-profile"}>
-                                                                              <VscAccount size='1.5rem' />
+                                                                        <NavLink to={'/auth/login'}>
+                                                                              <VscAccount size='2rem' />
                                                                         </NavLink>
                                                                   }
-                                                                  {user &&
+
+                                                                  {user?.roleId === Role.User &&
                                                                         <Dropdown>
                                                                               <DropdownToggle as={NavLink} to={null}>
-                                                                                    <VscAccount size='1.5rem' />
+                                                                                    <VscAccount size='2rem' />
                                                                               </DropdownToggle>
 
                                                                               <DropdownMenu>
-                                                                                    <DropdownItem eventKey={1} as={'div'}>
-                                                                                          <AuthMenu />
-                                                                                    </DropdownItem>
+                                                                                    <Dropdown.Header>
+                                                                                          Hello {user?.firstName + " " + user?.lastName}
+                                                                                    </Dropdown.Header>
+
+                                                                                    <Dropdown.Divider />
+
+                                                                                    <Dropdown.ItemText>
+                                                                                          <NavLink to="auth/logout">
+                                                                                                <Button variant="danger">
+                                                                                                      Logout
+                                                                                                </Button>
+                                                                                          </NavLink>
+                                                                                    </Dropdown.ItemText>
+
+                                                                              </DropdownMenu>
+                                                                        </Dropdown>
+                                                                  }
+                                                                  {user?.roleId === Role.Admin &&
+                                                                        <Dropdown>
+                                                                              <DropdownToggle as={NavLink} to={null}>
+                                                                                    <VscAccount size='2rem' />
+                                                                              </DropdownToggle>
+
+                                                                              <DropdownMenu>
+                                                                                    <Dropdown.Header>
+                                                                                          Hello Admin
+                                                                                    </Dropdown.Header>
+
+                                                                                    <Dropdown.Divider />
+
+                                                                                    <Dropdown.ItemText>
+                                                                                          <Nav.Link as={NavLink} to="/add-product">
+                                                                                                Add Product
+                                                                                          </Nav.Link>
+                                                                                    </Dropdown.ItemText>
+
+                                                                                    <Dropdown.ItemText>
+                                                                                          <NavLink to="auth/logout">
+                                                                                                <Button variant="danger">
+                                                                                                      Logout
+                                                                                                </Button>
+                                                                                          </NavLink>
+                                                                                    </Dropdown.ItemText>
                                                                               </DropdownMenu>
                                                                         </Dropdown>
                                                                   }
@@ -155,17 +201,66 @@ const MyNavbar = (props: MyNavbarProps) => {
                                                       </NavLink>
                                                 </Col>
                                                 <Col sm='6' xs='6' xxs='6'>
-                                                      <Dropdown>
-                                                            <DropdownToggle as={NavLink} to={null}>
+                                                      {!user &&
+                                                            <NavLink to={'/auth/login'}>
                                                                   <VscAccount size='1.8rem' />
-                                                            </DropdownToggle>
+                                                            </NavLink>
+                                                      }
 
-                                                            <DropdownMenu>
-                                                                  <DropdownItem eventKey={1} as={'div'}>
-                                                                        <AuthMenu />
-                                                                  </DropdownItem>
-                                                            </DropdownMenu>
-                                                      </Dropdown>
+                                                      {user?.roleId === Role.User &&
+                                                            <Dropdown>
+                                                                  <DropdownToggle as={NavLink} to={null}>
+                                                                        <VscAccount size='1.8rem' />
+                                                                  </DropdownToggle>
+
+                                                                  <DropdownMenu>
+                                                                        <Dropdown.Header>
+                                                                              Hello {user?.firstName + " " + user?.lastName}
+                                                                        </Dropdown.Header>
+
+                                                                        <Dropdown.Divider />
+
+                                                                        <Dropdown.ItemText>
+                                                                              <NavLink to="auth/logout">
+                                                                                    <Button variant="danger">
+                                                                                          Logout
+                                                                                    </Button>
+                                                                              </NavLink>
+                                                                        </Dropdown.ItemText>
+
+                                                                  </DropdownMenu>
+                                                            </Dropdown>
+                                                      }
+                                                      {user?.roleId === Role.Admin &&
+                                                            <Dropdown>
+                                                                  <DropdownToggle as={NavLink} to={null}>
+                                                                        <VscAccount size='1.8rem' />
+                                                                  </DropdownToggle>
+
+                                                                  <DropdownMenu>
+                                                                        <Dropdown.Header>
+                                                                              Hello Admin
+                                                                        </Dropdown.Header>
+
+                                                                        <Dropdown.Divider />
+
+                                                                        <Dropdown.ItemText>
+                                                                              <Nav.Link as={NavLink} to="/add-product">
+                                                                                    Add Product
+                                                                              </Nav.Link>
+                                                                        </Dropdown.ItemText>
+
+                                                                        <Dropdown.ItemText>
+                                                                              <NavLink to="auth/logout">
+                                                                                    <Button variant="danger">
+                                                                                          Logout
+                                                                                    </Button>
+                                                                              </NavLink>
+                                                                        </Dropdown.ItemText>
+                                                                  </DropdownMenu>
+                                                            </Dropdown>
+                                                      }
+
                                                 </Col>
                                           </Row>
                                     </Col>
@@ -174,8 +269,14 @@ const MyNavbar = (props: MyNavbarProps) => {
                                     <Col sm='8' xs='8' xxs='6'>
                                           <Row>
                                                 <Col sm='12' xs='12' xxs='12'>
-                                                      <Navbar.Brand as={NavLink} to="/">EA<strong>Store</strong></Navbar.Brand>
-                                                </Col >
+                                                      <Navbar.Brand>
+                                                            <h3>
+                                                                  <Nav.Link as={NavLink} to="/">
+                                                                        EA<strong style={{ color: "lightblue" }}>Store</strong>
+                                                                  </Nav.Link>
+                                                            </h3>
+                                                      </Navbar.Brand>
+                                                </Col>
                                           </Row >
                                     </Col >
 

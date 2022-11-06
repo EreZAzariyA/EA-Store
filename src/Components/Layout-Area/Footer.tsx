@@ -1,12 +1,20 @@
 import { Col, Container, Row } from "react-bootstrap"
 
+const titleStyle = {
+      color: 'white'
+}
+
 const Footer = () => {
       return (
             <Container>
                   <Row>
-
+                        <hr />
+                  </Row>
+                  <Row>
                         <Col sm='4'>
-                              Terms
+                              <title style={titleStyle}>
+                                    Terms
+                              </title>
                         </Col>
                         <Col sm='4'>
                               Contact Us
