@@ -1,4 +1,4 @@
-import { useCallback, useState, useEffect } from "react";
+import { useState, useEffect, useMemo, useCallback } from "react";
 import { Button, ButtonGroup, Card, Carousel, CarouselItem, Col, Container, Image, Row } from "react-bootstrap"
 import { useParams } from "react-router-dom";
 import { ItemInCartModel } from "../../Models/item-in-cart-model";
@@ -16,49 +16,62 @@ const OneProduct = () => {
       const [inCart, setInCart] = useState<boolean>(false);
 
 
-      const getProductByParams = useCallback(async () => {
+      useMemo(async () => {
             const productId = params.productId;
             const product = await productsServices.getOneProduct(productId);
             setProduct(product);
       }, [params.productId]);
 
 
-      const checkItem = useCallback(async (productIdToCheck: string) => {
+      const check = useCallback((items: ItemInCartModel[]) => {
+            if (items?.find(i => i.productId === product?.productId)) {
+                  setInCart(true);
+            } else {
+                  setInCart(false);
+            }
+      }, [product])
 
+      useMemo(() => {
             if (authStore.getState().user) {
-                  const itemsInUserCart = shoppingCartStore.getState().itemsInCart;
-                  if (itemsInUserCart.find(item => item?.productId === productIdToCheck)) {
-                        setInCart(true)
-                  } else {
-                        setInCart(false);
-                  }
-            } else if (guestStore.getState().itemsInGuestCart.length > 0) {
-                  const itemsInGuestCart = guestStore.getState().itemsInGuestCart;
-                  if (itemsInGuestCart.find(item => item?.productId === productIdToCheck)) {
-                        setInCart(true)
-                  } else {
-                        setInCart(false);
-                  }
+                  const items = shoppingCartStore.getState().itemsInCart;
+                  check(items);
+            } else {
+                  const items = guestStore.getState().itemsInGuestCart;
+                  check(items);
             }
 
-      }, [product?.productId]);
-
-      useEffect(() => {
-            getProductByParams();
-            checkItem(product?.productId);
-
-
             const userSubscribe = shoppingCartStore.subscribe(() => {
-                  checkItem(product?.productId);
+                  const items = shoppingCartStore.getState().itemsInCart;
+                  check(items);
             })
             const guestSubscribe = guestStore.subscribe(() => {
-                  checkItem(product?.productId);
+                  const items = guestStore.getState().itemsInGuestCart;
+                  check(items);
             })
 
             return () => {
                   userSubscribe();
                   guestSubscribe();
             }
+      }, [check]);
+
+
+      useEffect(() => {
+            // getProductByParams();
+            // checkItem(product?.productId);
+
+
+            // const userSubscribe = shoppingCartStore.subscribe(() => {
+            //       checkItem(product?.productId);
+            // })
+            // const guestSubscribe = guestStore.subscribe(() => {
+            //       checkItem(product?.productId);
+            // })
+
+            // return () => {
+            //       userSubscribe();
+            //       guestSubscribe();
+            // }
       });
 
 

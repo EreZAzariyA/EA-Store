@@ -26,13 +26,10 @@ export const CartPage = () => {
             const user = authStore.getState().user;
             setUser(user);
             if (user) {
-                  // getShoppingCartByUserId(user?.userId);
-                  // getItemsFromCart(user?.userId);
                   setItemsInCart(shoppingCartStore.getState().itemsInCart);
                   setShoppingCart(shoppingCartStore.getState().shoppingCart);
             } else if (localStorage.getItem('itemsInGuestCart')) {
-                  const itemsInGuestCart = JSON.parse(localStorage.getItem('itemsInGuestCart'));
-
+                  const itemsInGuestCart = guestStore.getState().itemsInGuestCart;
                   setItemsInCart(itemsInGuestCart);
             }
 
@@ -61,6 +58,12 @@ export const CartPage = () => {
                   </h3>
                   {itemsInCart?.length === 0 &&
                         <p>No Items yet</p>
+                  }
+
+                  {user &&
+                        <>
+                              {shoppingCart?.cartCreateDate.toLocaleString()}
+                        </>
                   }
 
                   <Row>

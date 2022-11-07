@@ -2,11 +2,10 @@ import { useState, useMemo, useCallback, useEffect } from "react";
 import { Button, Card, Carousel, Container, Image, Modal, Row } from "react-bootstrap"
 import { numberWithCommas } from "../..";
 import ProductModel from "../../Models/Product-Model"
-import { authStore, guestStore, productsStore } from "../../Redux/Store";
+import { authStore, guestStore, productsStore, shoppingCartStore } from "../../Redux/Store";
 import { BsCartCheck, BsCartPlus } from "react-icons/bs";
 import { NavLink } from "react-router-dom";
 import { ItemInCartModel } from "../../Models/item-in-cart-model";
-import shoppingCartServices from "../../Services/ShoppingCartServices";
 import MyModal from "./Modal";
 
 interface ProductCardProps {
@@ -33,7 +32,7 @@ const ProductCard = (props: ProductCardProps) => {
       const getItemsFromUserCartByUserId = useCallback(async () => {
             const user = authStore.getState().user;
             if (user) {
-                  const itemsInCart = await shoppingCartServices.getAllItemsFromUserCartByUserId(user?.userId);
+                  const itemsInCart = shoppingCartStore.getState().itemsInCart;
                   setItemsInCart(itemsInCart);
             } else {
                   const itemsInCart = guestStore.getState().itemsInGuestCart;

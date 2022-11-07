@@ -1,4 +1,4 @@
-import { useEffect, useState, useCallback } from "react";
+import { useState, useMemo } from "react";
 import { Badge, Button, Card, Col, Placeholder, Row } from "react-bootstrap"
 import { numberWithCommas } from "../..";
 import { ItemInCartModel } from "../../Models/item-in-cart-model"
@@ -18,14 +18,10 @@ const ItemInCart = (props: ItemInCartProps) => {
 
       const [product, setProduct] = useState<ProductModel>();
 
-      const getProduct = useCallback(async () => {
+      useMemo(async () => {
             const product = await productsServices.getOneProduct(props.item.productId);
             setProduct(product);
       }, [props.item.productId]);
-
-      useEffect(() => {
-            getProduct();
-      })
 
       const deleteItem = (async () => {
             const answer = window.confirm("Are you sure?");
@@ -37,6 +33,7 @@ const ItemInCart = (props: ItemInCartProps) => {
                               notifyService.error("Removed from cart...");
                         } else {
                               guestStore.dispatch(removeItemFromGuestCartAction(props.item.productId));
+                              notifyService.error("Removed from cart...");
                         }
                   } catch (err: any) {
                         notifyService.error(err);
