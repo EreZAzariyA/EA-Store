@@ -12,8 +12,6 @@ import productsServices from "../../Services/Products-Services";
 import "./Style.css";
 import DropdownToggle from "react-bootstrap/esm/DropdownToggle";
 import DropdownMenu from "react-bootstrap/esm/DropdownMenu";
-import AuthMenu from "../Auth-Area/AuthMenu";
-import DropdownItem from "react-bootstrap/esm/DropdownItem";
 import { authStore, productsStore } from "../../Redux/Store";
 import UserModel from "../../Models/user-model";
 import { fetchAllProductsAction } from "../../Redux/Products-state";
@@ -21,7 +19,6 @@ import axios from "axios";
 import ProductModel from "../../Models/Product-Model";
 import config from "../../Utils/Config";
 import Role from "../../Models/role";
-import DropdownContext from "react-bootstrap/esm/DropdownContext";
 
 interface MyNavbarProps {
       bodyWidth: number;
