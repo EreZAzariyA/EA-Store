@@ -1,4 +1,4 @@
-import { useCallback, useState, useEffect, SyntheticEvent } from "react";
+import {  useState, useEffect, SyntheticEvent, useMemo } from "react";
 import { Navbar, Container, Row, Col, Offcanvas, Form, Dropdown, Button, Nav, FloatingLabel } from "react-bootstrap"
 import { NavLink } from "react-router-dom";
 import { AiOutlineSearch, AiOutlineShoppingCart } from "react-icons/ai";
@@ -34,20 +34,19 @@ const MyNavbar = (props: MyNavbarProps) => {
       const [user, setUser] = useState<UserModel>();
       const [subCategories, setSubCategories] = useState<SubCategoryModel[]>();
 
-      const getAllSubCategories = useCallback(async () => {
+      useMemo(async () => {
             const subCategories = await productsServices.getAllSubCategories();
             setSubCategories(subCategories);
       }, []);
 
       useEffect(() => {
             setUser(authStore.getState().user);
-            getAllSubCategories();
 
             const unsubscribe = authStore.subscribe(() => {
                   setUser(authStore.getState().user);
             });
             return () => unsubscribe();
-      }, [getAllSubCategories]);
+      },[user]);
 
       const search = async (e: SyntheticEvent) => {
             const searchValue = (e.target as HTMLInputElement).value;

@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from "react";
+import { useState, useCallback, useEffect, useMemo } from "react";
 import { Container, Row } from "react-bootstrap"
 import CategoryModel from "../../Models/Category-Model";
 import productsServices from "../../Services/Products-Services";
@@ -10,25 +10,25 @@ import "./Style.css";
 const Layout = () => {
       // Size
       const [size, setSize] = useState<number>();
-      const getSize = useCallback(() => {
+      const setBodySize = useCallback(() => {
             const size = document.body.offsetWidth
             setSize(size);
 
             document.body.onresize = () => {
                   setSize(document.body.offsetWidth);
             }
-      }, []);
+      }, [])
+
+      useEffect(() => {
+            setBodySize();
+      });
 
       const [categories, setCategories] = useState<CategoryModel[]>();
-      const getAllCategories = useCallback(async () => {
+      useMemo(async () => {
             const categories = await productsServices.getAllCategories();
             setCategories(categories);
       }, []);
 
-      useEffect(() => {
-            getSize();
-            getAllCategories();
-      });
 
 
       return (
