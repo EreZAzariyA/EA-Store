@@ -1,4 +1,4 @@
-import { useState, useMemo, useCallback, useEffect } from "react";
+import { useState, useMemo, useEffect, useCallback } from "react";
 import { Button, Card, Carousel, Container, Image, Modal, Row } from "react-bootstrap"
 import { numberWithCommas } from "../..";
 import ProductModel from "../../Models/Product-Model"
@@ -20,13 +20,13 @@ const ProductCard = (props: ProductCardProps) => {
       const [size, setSize] = useState(0);
       useMemo(() => {
             const size = document.body.offsetWidth
-            document.body.onresize = () => {
-                  const size = document.body.offsetWidth;
-                  setSize(size);
-            }
             setSize(size);
 
-      }, []);
+            document.body.onresize = () => {
+                  setSize(document.body.offsetWidth);
+            }
+      }, [])
+
 
       const [itemsInCart, setItemsInCart] = useState<ItemInCartModel[]>();
       const getItemsFromUserCartByUserId = useCallback(async () => {
@@ -146,7 +146,6 @@ const ProductCard = (props: ProductCardProps) => {
                                     </Button> */}
 
                         </Card>
-
                   }
                   {/* For Mobile */}
                   {

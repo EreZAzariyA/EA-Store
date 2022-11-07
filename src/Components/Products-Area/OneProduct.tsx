@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo, useCallback } from "react";
+import { useState, useMemo, useCallback } from "react";
 import { Button, ButtonGroup, Card, Carousel, CarouselItem, Col, Container, Image, Row } from "react-bootstrap"
 import { useParams } from "react-router-dom";
 import { ItemInCartModel } from "../../Models/item-in-cart-model";
@@ -56,36 +56,16 @@ const OneProduct = () => {
       }, [check]);
 
 
-      useEffect(() => {
-            // getProductByParams();
-            // checkItem(product?.productId);
-
-
-            // const userSubscribe = shoppingCartStore.subscribe(() => {
-            //       checkItem(product?.productId);
-            // })
-            // const guestSubscribe = guestStore.subscribe(() => {
-            //       checkItem(product?.productId);
-            // })
-
-            // return () => {
-            //       userSubscribe();
-            //       guestSubscribe();
-            // }
-      });
-
-
       const plus = () => {
             setStock(stock + 1);
       };
       const minus = () => {
-            if (stock === 0) {
+            if (stock === 1) {
                   return;
             } else {
                   setStock(stock - 1);
             }
       };
-
 
       const addToCart = async () => {
             const itemToAdd = new ItemInCartModel();

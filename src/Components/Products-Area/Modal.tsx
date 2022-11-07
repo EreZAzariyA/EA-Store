@@ -59,6 +59,9 @@ const MyModal = (props: MyModalProps) => {
             setStock(stock + 1)
       }
       const minus = () => {
+            if (stock === 1) {
+                  return;
+            }
             setStock(stock - 1)
       }
 
