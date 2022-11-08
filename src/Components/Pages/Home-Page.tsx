@@ -16,7 +16,7 @@ const HomePage = () => {
 
 
       return (
-            <Container fluid>
+            <Container fluid='xs'>
                   <Row>
                         <Carousel fade variant="dark">
                               <CarouselItem>

@@ -25,7 +25,19 @@ const ProductCard = (props: ProductCardProps) => {
             document.body.onresize = () => {
                   setSize(document.body.offsetWidth);
             }
-      }, [])
+      }, []);
+
+      const [isMobile, setIsMobile] = useState<boolean>();
+      const device = navigator.userAgent;
+      useEffect(() => {
+            if (device.includes("Android")) {
+                  setIsMobile(true);
+            } else if (device.includes("iPhone")) {
+                  setIsMobile(true);
+            } else {
+                  setIsMobile(false);
+            }
+      }, [device]);
 
 
       const [itemsInCart, setItemsInCart] = useState<ItemInCartModel[]>();
@@ -149,8 +161,75 @@ const ProductCard = (props: ProductCardProps) => {
                   }
                   {/* For Mobile */}
                   {
-                        size < 768 &&
+                        size < 768 && size > 576 &&
                         <Card className="d-inline-block m-1 p-2" style={{ width: '15rem' }}>
+
+
+                              {/* Product card images */}
+                              <Carousel variant="dark">
+                                    <Carousel.Item>
+                                          <NavLink to={`/product/${props.product.productId}`}>
+                                                <Image src={props.product.productImage} alt="" height={'300px'} width="100%" />
+                                          </NavLink>
+                                    </Carousel.Item>
+                                    <Carousel.Item>
+                                          <NavLink to={`/product/${props.product.productId}`}>
+                                                <Image src={props.product.productImage} alt="" height={'300px'} width="100%" />
+                                          </NavLink>
+                                    </Carousel.Item>
+                                    <Carousel.Item>
+                                          <NavLink to={`/product/${props.product.productId}`}>
+                                                <Image src={props.product.productImage} alt="" height={'300px'} width="100%" />
+                                          </NavLink>
+                                    </Carousel.Item>
+                              </Carousel>
+
+                              <Card.Body>
+
+                                    <Card.Title style={{ overflow: "hidden", height: "50px" }}>
+                                          {props.product.productName}
+                                    </Card.Title>
+
+                                    <Container className="me-auto text-muted" style={{ overflow: "hidden", height: "100px" }}>
+
+                                          <Row>
+                                                <Card.Subtitle>
+                                                      {getCategoryById(props.product.categoryId)}
+                                                </Card.Subtitle>
+                                          </Row>
+                                          <Row>
+                                                <p>
+                                                      {getSubCategoryById(props.product.subCategoryId)}
+                                                </p >
+
+                                          </Row>
+                                    </Container>
+
+                                    <h6>
+                                          {numberWithCommas(props.product.productPrice) + '$'}
+                                    </h6>
+
+
+                              </Card.Body>
+
+                              <Card.Footer>
+                                    {!inCart &&
+                                          <Button onClick={handleShow}>
+                                                Add To Cart
+                                                <BsCartPlus className="m-1" />
+                                          </Button>
+                                    }
+                                    {inCart &&
+                                          <Button variant="success">
+                                                In Cart
+                                                <BsCartCheck className="m-1" />
+                                          </Button>
+                                    }
+                              </Card.Footer>
+                        </Card>
+                  }
+                  {size < 576 &&
+                        <Card className="d-inline-block m-1 p-2" style={{ width: '10rem' }}>
 
 
                               {/* Product card images */}
