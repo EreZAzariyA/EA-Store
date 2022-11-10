@@ -1,9 +1,7 @@
-import { useEffect } from "react";
 import { Button, Col, Container, Form, Row } from "react-bootstrap";
 import { useForm } from "react-hook-form";
 import { NavLink, useNavigate } from "react-router-dom";
 import CredentialsModel from "../../Models/credentials-model";
-import { authStore } from "../../Redux/Store";
 import { authServices } from "../../Services/AuthServices";
 import notifyService from "../../Services/NotifyService";
 import "./Auth-Style.css";
@@ -26,7 +24,6 @@ function Login(): JSX.Element {
             await authServices.login(credentials);
             notifyService.success("Your in...");
             navigate("/");
-
         } catch (err: any) {
             notifyService.error(err);
         }

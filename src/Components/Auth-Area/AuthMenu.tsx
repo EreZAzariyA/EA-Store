@@ -5,11 +5,10 @@ import { authStore } from "../../Redux/Store";
 import { BiLogIn } from "react-icons/bi";
 import { BiLogOut } from "react-icons/bi";
 import { Button, Col, Container, Dropdown, Nav, Row } from "react-bootstrap";
-import { authServices } from "../../Services/AuthServices";
-import notifyService from "../../Services/NotifyService";
+
+import Logout from "./Logout";
 
 function AuthMenu(): JSX.Element {
-
     const [user, setUser] = useState<UserModel>();
 
     useEffect(() => {
@@ -18,14 +17,8 @@ function AuthMenu(): JSX.Element {
         const unsubscribe = authStore.subscribe(() => {
             setUser(authStore.getState()?.user);
         });
-
         return () => unsubscribe();
     }, []);
-
-    const logout = async () => {
-        await authServices.logout();
-        notifyService.error("Logged-out...");
-    }
 
     return (
         <Container>
@@ -56,7 +49,7 @@ function AuthMenu(): JSX.Element {
                     </Col>
 
                     <Col lg="12">
-                        <Button variant="outline-danger" onClick={logout} size='sm'>
+                        <Button variant="outline-danger" onClick={Logout} size='sm'>
                             <BiLogOut size='25px' />
                             Logout
                         </Button>

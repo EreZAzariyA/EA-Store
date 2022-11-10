@@ -14,26 +14,25 @@ const HomePage = () => {
             setProducts(products);
       }, []);
 
-
       return (
-            <Container fluid='xs'>
+            <div>
                   <Row>
                         <Carousel fade variant="dark">
                               <CarouselItem>
-                                    <Image src={photo} alt="" width={'100%'} />
+                                    <Image src={photo} alt="" width='100%' />
                                     <Carousel.Caption>
                                           <h3>Welcome</h3>
                                           <p>Lorem ipsum dolor sit amet consectetur adipisicing elit.</p>
                                     </Carousel.Caption>
                               </CarouselItem>
+
                               <CarouselItem>
-                                    <Image src={photo} alt="" width={'100%'} />
+                                    <Image src={photo} alt="" width='100%' />
                                     <Carousel.Caption>
                                           <h3>New UI</h3>
                                           <p>optio fuga beatae amet dolorum provident omnis.</p>
                                     </Carousel.Caption>
                               </CarouselItem>
-
                         </Carousel>
                   </Row>
 
@@ -41,24 +40,24 @@ const HomePage = () => {
                         <h3 className="text-decoration-underline">
                               Home-Page
                         </h3>
-                        {products === undefined &&
-                              <Row className="justify-content-center">
-                                    <UndefineCard />
-                                    <UndefineCard />
-                                    <UndefineCard />
-                                    <UndefineCard />
-                                    <UndefineCard />
-                                    <UndefineCard />
-                              </Row>
-                        }
-                        <Row className="justify-content-center">
+                        <Row className="d-inline-block">
+                              {products === undefined &&
+                                    <>
+                                          <UndefineCard />
+                                          <UndefineCard />
+                                          <UndefineCard />
+                                          <UndefineCard />
+                                          <UndefineCard />
+                                          <UndefineCard />
+                                    </>
+                              }
                               {products?.map(product =>
                                     <ProductCard key={product.productId} product={product} />
                               )}
                         </Row>
                   </Container>
 
-            </Container>
+            </div>
       )
 }
 

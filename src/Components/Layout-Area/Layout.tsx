@@ -1,4 +1,4 @@
-import { useState,  useEffect, useMemo } from "react";
+import { useState, useMemo } from "react";
 import { Container, Row } from "react-bootstrap"
 import CategoryModel from "../../Models/Category-Model";
 import productsServices from "../../Services/Products-Services";
@@ -8,32 +8,30 @@ import Routing from "./Routing";
 import "./Style.css";
 
 const Layout = () => {
-      // Size
-      const [size, setSize] = useState<number>();
-
-      useEffect(() => {
-            const size = document.body.offsetWidth
-            setSize(size);
-
-            document.body.onresize = () => {
-                  setSize(document.body.offsetWidth);
-                  console.log(size);
-            }
-      }, [size])
-
-
       const [categories, setCategories] = useState<CategoryModel[]>();
+      const [windowSize, setWindowSize] = useState<number>();
+      
+      // Set size
+      const handleWindowResize = () => {
+            setWindowSize(window.innerWidth);
+      }
+      useMemo(() => {
+            setWindowSize(window.innerWidth);
+            window.addEventListener('resize', handleWindowResize);
+            return () => {
+                  window.removeEventListener('resize', handleWindowResize);
+            };
+      }, [windowSize]);
+      // Get all categories
       useMemo(async () => {
             const categories = await productsServices.getAllCategories();
             setCategories(categories);
       }, []);
 
-
-
       return (
             <Container fluid className="Layout">
                   <Row>
-                        <MyNavbar bodyWidth={size} categories={categories} />
+                        <MyNavbar bodyWidth={windowSize} categories={categories} />
                   </Row>
 
                   <Row>

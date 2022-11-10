@@ -1,11 +1,12 @@
 import { Container, Nav, Navbar, NavDropdown, Offcanvas } from "react-bootstrap";
 import CategoryModel from "../../Models/Category-Model";
-import { useCallback, useEffect, useState } from "react"
+import { useEffect, useState } from "react"
 import SubCategoryModel from "../../Models/sub-category-model";
 import productsServices from "../../Services/Products-Services";
 import { UndefinedNav } from "./Sub-Navbar";
 import DropdownItem from "react-bootstrap/esm/DropdownItem";
 import { NavLink } from "react-router-dom";
+import { productsStore } from "../../Redux/Store";
 
 interface SideNavProps {
       categories: CategoryModel[];
@@ -14,14 +15,20 @@ interface SideNavProps {
 const SideNav = (props: SideNavProps) => {
       const [subCategories, setSubCategories] = useState<SubCategoryModel[]>();
 
-      const getAllSubCategories = useCallback(async () => {
+      const getAllSubCategories = async () => {
             const subCategories = await productsServices.getAllSubCategories();
             setSubCategories(subCategories);
-      }, [])
+      };
 
       useEffect(() => {
-            getAllSubCategories();
-      })
+            const subCategories = productsStore.getState().subCategories;
+            if (subCategories.length === 0) {
+                  getAllSubCategories();
+            } else {
+                  setSubCategories(subCategories);
+            }
+      }, [])
+
 
       const getSubCategoriesByCategoryId = (categoryId: string) => {
             const subCategory = subCategories?.filter(subCategory => subCategory.categoryId === categoryId);
@@ -35,7 +42,7 @@ const SideNav = (props: SideNavProps) => {
       }
 
       return (
-            <Container fluid='true'>
+            <Container>
                   <Offcanvas.Header closeButton>
                         <Offcanvas.Title>Categories</Offcanvas.Title>
                   </Offcanvas.Header>
@@ -46,9 +53,9 @@ const SideNav = (props: SideNavProps) => {
                               <Navbar collapseOnSelect expand='xs' className="justify-content-center">
                                     <Nav>
 
-                                                <Nav.Link as={NavLink} to="/">
-                                                      Home-Page
-                                                </Nav.Link>
+                                          <Nav.Link as={NavLink} to="/">
+                                                Home-Page
+                                          </Nav.Link>
                                           {props.categories?.map(category =>
 
                                                 <NavDropdown

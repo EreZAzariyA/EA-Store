@@ -3,7 +3,6 @@ import { Route, Routes } from "react-router-dom";
 import UserModel from "../../Models/user-model";
 import { authStore } from "../../Redux/Store";
 import Login from "../Auth-Area/Login";
-import Logout from "../Auth-Area/Logout";
 import Register from "../Auth-Area/Register";
 import { CartPage } from "../Pages/Cart-Page";
 import { CategoriesPages } from "../Pages/Categories-Pages";
@@ -40,7 +39,6 @@ const Routing = () => {
                               <Route path="/auth/register" element={<Register />} />
                         </>
                   }
-                  <Route path="/auth/logout" element={<Logout />} />
             </Routes>
       )
 }

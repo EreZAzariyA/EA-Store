@@ -4,7 +4,7 @@ import { NavLink } from "react-router-dom";
 
 function UndefineCard(): JSX.Element {
     return (
-        <div className="undefineCard">
+        <div className="undefineCard m-1">
             <div className="card" aria-hidden="true">
                 <img src={image} className="card-img-top placeholder-glow" alt="..." />
                 <div className="card-body">
