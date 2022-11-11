@@ -100,7 +100,7 @@ class DevelopmentConfig extends Config {
 
 class ProductionConfig extends Config {
       public constructor() {
-            super("https://6wreo9v8c0.execute-api.eu-central-1.amazonaws.com/api/")
+            super("https://7v7uwlv9pc.execute-api.eu-central-1.amazonaws.com/api/")
       }
 }
 
