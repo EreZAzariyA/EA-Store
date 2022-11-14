@@ -94,13 +94,13 @@ abstract class Config {
 
 class DevelopmentConfig extends Config {
       public constructor() {
-            super("http://localhost:5000/api/")
+            super("https://k6u7v23xwh.execute-api.eu-central-1.amazonaws.com/api/")
       }
 }
 
 class ProductionConfig extends Config {
       public constructor() {
-            super("https://7v7uwlv9pc.execute-api.eu-central-1.amazonaws.com/api/")
+            super("https://k6u7v23xwh.execute-api.eu-central-1.amazonaws.com/api/")
       }
 }
 

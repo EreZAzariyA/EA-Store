@@ -158,11 +158,9 @@ const MyNavbar = (props: MyNavbarProps) => {
                                                                                     </Dropdown.ItemText>
 
                                                                                     <Dropdown.ItemText>
-                                                                                          <NavLink to="auth/logout">
-                                                                                                <Button variant="danger">
-                                                                                                      Logout
-                                                                                                </Button>
-                                                                                          </NavLink>
+                                                                                          <Button variant="danger" onClick={Logout}>
+                                                                                                Logout
+                                                                                          </Button>
                                                                                     </Dropdown.ItemText>
                                                                               </DropdownMenu>
                                                                         </Dropdown>
@@ -182,7 +180,7 @@ const MyNavbar = (props: MyNavbarProps) => {
                   }
 
                   {/* For Mobile */}
-                  {props.bodyWidth < 768  &&
+                  {props.bodyWidth < 768 &&
                         <Container fluid className=" pt-3">
                               <Row>
                                     <Col sm='2' xs='3' xxs='3'>
@@ -241,11 +239,9 @@ const MyNavbar = (props: MyNavbarProps) => {
                                                                         </Dropdown.ItemText>
 
                                                                         <Dropdown.ItemText>
-                                                                              <NavLink to="auth/logout">
-                                                                                    <Button variant="danger">
-                                                                                          Logout
-                                                                                    </Button>
-                                                                              </NavLink>
+                                                                              <Button variant="danger" onClick={Logout}>
+                                                                                    Logout
+                                                                              </Button>
                                                                         </Dropdown.ItemText>
                                                                   </DropdownMenu>
                                                             </Dropdown>
