@@ -94,7 +94,7 @@ abstract class Config {
 
 class DevelopmentConfig extends Config {
       public constructor() {
-            super("https://k6u7v23xwh.execute-api.eu-central-1.amazonaws.com/api/")
+            super("http://localhost:5000/api/")
       }
 }
 
