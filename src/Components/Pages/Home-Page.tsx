@@ -3,7 +3,7 @@ import { Carousel, CarouselItem, Container, Image, Row } from "react-bootstrap"
 import photo from "../../Assets/e-commerce photo.png";
 import ProductModel from "../../Models/Product-Model";
 import productsServices from "../../Services/Products-Services";
-import ProductCard from "../Products-Area/Product-Card";
+import ProductCard from "../Products-Area/Product-Card/Product-Card";
 import UndefineCard from "../Products-Area/undefineCard/undefineCard";
 
 const HomePage = () => {

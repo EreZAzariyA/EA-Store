@@ -6,3 +6,15 @@ body,
   text-align: center;
   height: 100%;
 }
+
+#bg {
+  position: fixed;
+  top: 0;
+  height: 100%;
+  width: 100%;
+  z-index: -1;
+  background-image: url("/public/background.jpg");
+  background-size: cover;
+  background-position: center;
+  filter: blur(2px);
+}

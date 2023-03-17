@@ -1,12 +1,13 @@
 import { useState, useMemo, useEffect, useCallback } from "react";
 import { Button, Card, Carousel, Container, Image, Modal, Row } from "react-bootstrap"
-import { numberWithCommas } from "../..";
-import ProductModel from "../../Models/Product-Model"
-import { authStore, guestStore, productsStore, shoppingCartStore } from "../../Redux/Store";
+import { numberWithCommas } from "../../..";
+import ProductModel from "../../../Models/Product-Model"
+import { authStore, guestStore, productsStore, shoppingCartStore } from "../../../Redux/Store";
 import { BsCartCheck, BsCartPlus } from "react-icons/bs";
 import { NavLink } from "react-router-dom";
-import { ItemInCartModel } from "../../Models/item-in-cart-model";
-import MyModal from "./Modal";
+import { ItemInCartModel } from "../../../Models/item-in-cart-model";
+import MyModal from "../Modal";
+import "./style.css";
 
 interface ProductCardProps {
       product: ProductModel;
@@ -79,7 +80,7 @@ const ProductCard = (props: ProductCardProps) => {
             <>
                   {/* For Desktop */}
                   {size >= 768 &&
-                        <Card className="d-inline-block m-1" style={{ width: '18rem' }}>
+                        <Card className="d-inline-block m-1 product_card" style={{ width: '18rem' }}>
 
                               {/* Product card images */}
 

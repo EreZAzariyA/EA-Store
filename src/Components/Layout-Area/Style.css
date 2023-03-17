@@ -1,11 +1,6 @@
 .Layout {
       display: grid;
-      height: 100%;
+      height: max-content;
       grid-template-rows: min-content auto min-content;
+      height: 100%;
 }
-/* 
-.miniNav>*>*>*>* {
-      display: flex;
-      flex-direction: row;
-      justify-content: center;
-} */

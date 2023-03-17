@@ -4,7 +4,7 @@ import { useParams } from "react-router-dom"
 import ProductModel from "../../Models/Product-Model";
 import { productsStore } from "../../Redux/Store";
 import productsServices from "../../Services/Products-Services";
-import ProductCard from "../Products-Area/Product-Card";
+import ProductCard from "../Products-Area/Product-Card/Product-Card";
 
 export const CategoriesPages = () => {
       const params = useParams();
