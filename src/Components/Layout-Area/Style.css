@@ -1,6 +1,10 @@
 .Layout {
-      display: grid;
-      height: max-content;
-      grid-template-rows: min-content auto min-content;
-      height: 100%;
+  display: grid;
+  height: max-content;
+  grid-template-rows: min-content auto min-content;
+  height: 100%;
+}
+
+.nav-item a{
+  color: white !important;
 }
